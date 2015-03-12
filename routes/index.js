@@ -11,7 +11,7 @@ module.exports = {
   init: function(app) {
     var _app = app;
 
-    router.get('/', home.index);
+    router.get('/', homeCtrl.index);
 
     _app.use('/', router);
     _app.use('/users', users);

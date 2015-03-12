@@ -2,7 +2,8 @@ var config = {
   "db": {
     "database": "bhw_pc",
     "username": "root",
-    "password": ""
+    "password": "",
+    "prefix": "kz_"
   }
 }
 

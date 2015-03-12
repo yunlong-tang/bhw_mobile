@@ -1,9 +1,12 @@
-var Product = request('../models/product.js');
+var Product = require('../models/product.js');
 
 var home = {
   index: function (req, res, next) {
     Product.findAll().then(function (result) {
-      res.send(result);
+      res.render('index', {
+        title: "test",
+        data: result
+      });
     })
   }
 }
