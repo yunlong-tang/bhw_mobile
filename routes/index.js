@@ -5,15 +5,13 @@ var users = require('./users');
 var categories = require('./categories');
 var products = require('./products');
 
+var homeCtrl = require('../controllers/home');
+
 module.exports = {
   init: function(app) {
     var _app = app;
 
-    router.get('/', function(req, res, next) {
-      res.render('index', {
-        title: 'Express'
-      });
-    });
+    router.get('/', home.index);
 
     _app.use('/', router);
     _app.use('/users', users);
