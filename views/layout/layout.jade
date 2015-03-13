@@ -1,0 +1,27 @@
+doctype html
+html
+  head
+    title= title
+    meta(name='viewport', content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui')
+    link(rel='stylesheet', href='/stylesheets/style.css')
+  body
+    header
+      div.header-bar
+        div.header-title
+          = 'Test'
+
+    block content
+
+    footer
+      div.footer-bar
+        ul
+          li 
+            a(href='/')
+              span 闪购
+          li 
+            a(href='/cart')
+              span 已选
+          li 
+            a(href='/user')
+              span 我的
+    
