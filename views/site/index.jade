@@ -7,9 +7,16 @@ block content
       div.product-section
         a(href='products/'+item.id)
           div.product-item
-            img(src='http://bhw_pc/'+item.img, alt="")
+            img(src=imgPrefix+item.img, alt="")
             div.product-detail
               div.product-name= item.name
               div 
                 span.product-price= item.sellPrice
                 span.product-purchase.btn 立即购买
+
+block scriptBlock
+  script.
+    $(".product-purchase").click(function(event) {
+      console.log("add to cart");
+      return false;
+    })

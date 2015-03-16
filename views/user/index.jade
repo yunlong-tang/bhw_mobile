@@ -1,0 +1,23 @@
+extends ../layout/layout.jade
+
+block content
+  div.contrainer
+    div.user-info
+      div.user-image
+        img(src="user.headIco") 
+      div.user-detail
+        div.user-name
+          用户名
+        
+    div.app-section
+      a.list-item(href="/users/orderList")
+        div
+          span 我的订单
+          i
+      a.list-item(href="/users/addressList")
+        div
+          span 我的地址
+          i
+    div.app-section
+      a.app-button.dark-blue(href="/users/logout") 退出登录
+    

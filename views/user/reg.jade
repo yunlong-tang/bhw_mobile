@@ -1,0 +1,15 @@
+extends ../layout/layout.jade
+
+block content
+  div.contrainer
+    form(id="reg", method="post", action="")
+    div.app-section
+      input.app-input(placeholder="手机号")
+    div.app-section
+      input.app-input(placeholder="请输入登录密码" type="password")
+      input.app-input(placeholder="请再一次输入密码" type="password")
+    div.app-section
+      input.app-input(placeholder="请输入收到的验证码")
+      button.app-button.dark-blue 发送验证码
+    div.app-section
+      button.app-button.green 注册

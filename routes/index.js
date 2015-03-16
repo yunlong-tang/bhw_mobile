@@ -4,6 +4,7 @@ var router = express.Router();
 var users = require('./users');
 var categories = require('./categories');
 var products = require('./products');
+var carts = require('./carts');
 
 var homeCtrl = require('../controllers/home');
 
@@ -17,5 +18,6 @@ module.exports = {
     _app.use('/users', users);
     _app.use('/categories', categories);
     _app.use('/products', products);
+    _app.use('/carts', carts);
   }
 };

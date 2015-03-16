@@ -1,5 +1,7 @@
 var Sequelize = require('sequelize');
 var sequelize = require('./index');
+var ProductPhotoRelation = require('./productPhotoRelation.js');
+var ProductPhoto = require('./productPhoto.js');
 
 var prefix = require('../config/config').db.prefix;
 var tableName = prefix + 'goods';
@@ -12,6 +14,14 @@ var arrtibutes = {
     type: Sequelize.DECIMAL(15,2),
     field: "sell_price"
   },
+  marketPrice: {
+    type: Sequelize.DECIMAL(15,2),
+    field: "market_price"
+  },
+  costPrice: {
+    type: Sequelize.DECIMAL(15,2),
+    field: "cost_price"
+  },
   img: {
     type: Sequelize.STRING
   },
@@ -19,11 +29,18 @@ var arrtibutes = {
     type: Sequelize.BOOLEAN,
     field: "is_del"
   },
-
+  content: {
+    type: Sequelize.TEXT
+  }
 };
 
-var Product = sequelize.define(tableName, arrtibutes, {
-  timestamps: false
+var Product = sequelize.define('Product', arrtibutes, {
+  timestamps: false,
+  tableName: tableName
 });
+
+Product.hasMany(ProductPhotoRelation, {foreignKey: 'goods_id'});
+
+ProductPhotoRelation.belongsTo(ProductPhoto, {foreignKey: 'photo_id'});
 
 module.exports = Product;

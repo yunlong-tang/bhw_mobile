@@ -1,0 +1,32 @@
+extends ../layout/layout.jade
+
+block content
+  div.contrainer
+    div.product-detail-page
+      ul.product-slider#product-slider
+        - for (var i = 0; i < product.ProductPhotoRelations.length; i++)
+          - var item = product.ProductPhotoRelations[i];
+          li 
+            img(src=imgPrefix+item.ProductPhoto.img)
+      div.product-info
+        div= product.name
+        div= product.marketPrice
+        div= product.sellPrice
+
+      div.product-detail
+        div= "商品详情"
+        div.product-description !{product.content}
+
+    div.product-footer
+      div.purchase= "立即购买"
+      div.add-cart= "加入购物车"
+
+block scriptBlock
+  script(src='/javascripts/lib/pgwslider/pgwslider.min.js')
+  link(rel='stylesheet', href='/javascripts/lib/pgwslider/pgwslider.css')
+  script.
+    $('#product-slider').pgwSlider({
+      displayList: false,
+      transitionEffect: 'fading',
+
+    });

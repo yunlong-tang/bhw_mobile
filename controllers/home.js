@@ -1,15 +1,15 @@
 var Product = require('../models/product.js');
 
-var home = {
+var homeCtrl = {
   index: function (req, res, next) {
     Product.findAll().then(function (result) {
       console.log(result[0].sellPrice);
       res.render('site/index', {
-        title: "test",
+        title: "闪购",
         products: result
       });
     })
   }
 }
 
-module.exports = home;
+module.exports = homeCtrl;

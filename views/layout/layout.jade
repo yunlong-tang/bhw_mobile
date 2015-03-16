@@ -1,27 +1,39 @@
 doctype html
 html
+  - var imgPrefix = "http://bhw_pc/"
   head
-    title= title
+    title= "百花味"
     meta(name='viewport', content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui')
     link(rel='stylesheet', href='/stylesheets/style.css')
+    script(src='/javascripts/lib/zepto/zepto.min.js')
+    script(src='/javascripts/lib/zepto/fx.js')
   body
     header
       div.header-bar
-        div.header-title
-          = 'Test'
+        div.header-left#back 后退
+        div.header-title= title
+        div.header-right#header-right
+          a(href=rightHref)= rightContent
 
     block content
 
-    footer
+    footer(class=hideFooter ? 'hide' : 'show')
       div.footer-bar
         ul
-          li 
-            a(href='/')
+          li: a(href='/')
+              i
               span 闪购
-          li 
-            a(href='/cart')
+          li: a(href='/carts')
+              i 
               span 已选
-          li 
-            a(href='/user')
+          li: a(href='/users')
+              i
               span 我的
+
+    block scriptBlock
+
+    script.
+      $("#back").click(function() {
+        window.history.back();
+      })
     
