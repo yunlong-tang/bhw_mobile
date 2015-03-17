@@ -5,6 +5,7 @@ var homeCtrl = {
     Product.findAll().then(function (result) {
       console.log(result[0].sellPrice);
       res.render('site/index', {
+        hideBackButton: true,
         title: "闪购",
         products: result
       });

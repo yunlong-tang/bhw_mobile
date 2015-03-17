@@ -10,7 +10,7 @@ html
   body
     header
       div.header-bar
-        div.header-left#back 后退
+        div.header-left#back(class=hideBackButton ? 'hide' : 'show') 后退
         div.header-title= title
         div.header-right#header-right
           a(href=rightHref)= rightContent

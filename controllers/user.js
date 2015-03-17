@@ -1,14 +1,14 @@
 var userService = require('../services/user.js');
 var routerConstant = require('../config/router.js');
-var userCtrl = {
-  index: function(req, res, next) {
-    if (!req.cookies.user_id) {
-      res.redirect(routerConstant.userLogin);
-    }
-    res.render("user/index", {
-      title: "我的"
-    })
+var security = require('../services/security.js');
+// var util = require('../services/util.js');
 
+var userCtrl = {
+  index: function(user, req, res, next) {
+    res.render("user/index", {
+      title: "我的",
+      user: user
+    })
   },
   reg: function(req, res, next) {
     res.render("user/reg", {
@@ -18,8 +18,8 @@ var userCtrl = {
     })
   },
 
-  regAction: function (req, res, next) {
-    
+  regAction: function(req, res, next) {
+
   },
 
   login: function(req, res, next) {
@@ -29,18 +29,24 @@ var userCtrl = {
       rightHref: routerConstant.userReg
     });
   },
-  loginAction: function (req, res, next) {
+  loginAction: function(req, res, next) {
     var username = req.body.username;
     var password = req.body.password;
-    userService.loginVerify(username, password).then(function (user) {
+    userService.loginUser(username, password).then(function(user) {
       if (user) {
-        console.log(user);
-        res.cookie('user_id', username);
+        var token = security.serializeAuthTicket(username, password);
+        res.cookie("token", token, {
+          expires: new Date(Date.now() + 24 * 60 * 3600)
+        });
         res.redirect(routerConstant.userIndex);
-      } else {  
+      } else {
         res.redirect(routerConstant.userLogin);
       }
     });
+  },
+  logout: function(req, res, next) {
+    res.clearCookie("token");
+    res.redirect(routerConstant.userLogin);
   },
 
   forget: function(req, res, next) {
@@ -50,8 +56,8 @@ var userCtrl = {
       rightHref: routerConstant.userLogin
     })
   },
-  forgetAction: function (req, res, next) {
-    
+  forgetAction: function(req, res, next) {
+
   },
   orderList: function(req, res, next) {
 
@@ -68,6 +74,27 @@ var userCtrl = {
   addressEdit: function(req, res, next) {
 
   },
+  tokenVerify: function(req, res, next) {
+    security.hasLoginedUser(req, function(result) {
+      if (result) {
+        next(result);
+      } else {
+        res.clearCookie("token");
+        res.redirect(routerConstant.userLogin);
+      }
+    })
+  },
+
+  specialTokenVerify: function(req, res, next) {
+    security.hasLoginedUser(req, function(result) {
+      if (result === true) {
+        res.redirect(routerConstant.userIndex);
+      } else {
+        res.clearCookie("token");
+        res.redirect(routerConstant.userLogin);
+      }
+    })
+  }
 };
 
 module.exports = userCtrl;

@@ -3,17 +3,21 @@ var router = express.Router();
 var userCtrl = require('../controllers/user.js');
 
 
-router.get('/', userCtrl.index);
+router.get('/', userCtrl.tokenVerify, userCtrl.index);
 
 router.get('/login', userCtrl.login);
 router.post('/login', userCtrl.loginAction);
-router.get('/reg', userCtrl.reg);
+
+router.get('/logout', userCtrl.logout);
+
+router.get('/reg', userCtrl.specialTokenVerify, userCtrl.reg);
 router.post('/reg', userCtrl.regAction);
-router.get('/forget', userCtrl.forget);
+
+router.get('/forget', userCtrl.specialTokenVerify, userCtrl.forget);
 router.post('/forget', userCtrl.forgetAction);
 
-router.get('/orders', userCtrl.orderList);
-router.get('/addresses', userCtrl.addressList);
+router.get('/orders', userCtrl.tokenVerify, userCtrl.orderList);
+router.get('/addresses', userCtrl.tokenVerify, userCtrl.addressList);
 
 
 module.exports = router;
