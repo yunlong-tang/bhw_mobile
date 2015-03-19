@@ -24,10 +24,21 @@ var userCtrl = {
 
   login: function(req, res, next) {
     res.render("user/login", {
+      hideBackButton: true,
       title: "登录",
       rightContent: "注册",
       rightHref: routerConstant.userReg
-    });
+    })
+
+    // security.hasLoginedUser(req, function(result) {
+    //   if (result === true) {
+    //     res.redirect(routerConstant.userIndex);
+    //   } else {
+    //     res.clearCookie("token");
+
+    //     // res.redirect(routerConstant.userLogin);
+    //   }
+    // })
   },
   loginAction: function(req, res, next) {
     var username = req.body.username;
@@ -90,8 +101,7 @@ var userCtrl = {
       if (result === true) {
         res.redirect(routerConstant.userIndex);
       } else {
-        res.clearCookie("token");
-        res.redirect(routerConstant.userLogin);
+        next();
       }
     })
   }

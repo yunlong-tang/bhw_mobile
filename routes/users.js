@@ -5,7 +5,7 @@ var userCtrl = require('../controllers/user.js');
 
 router.get('/', userCtrl.tokenVerify, userCtrl.index);
 
-router.get('/login', userCtrl.login);
+router.get('/login', userCtrl.specialTokenVerify, userCtrl.login);
 router.post('/login', userCtrl.loginAction);
 
 router.get('/logout', userCtrl.logout);
