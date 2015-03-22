@@ -1,6 +1,6 @@
 module.exports = {
-  userIndex: "/users",
-  userLogin: "/users/login",
-  userReg: "/users/reg",
-  userForget: "/users/forget",
+  userIndex: "/user",
+  userLogin: "/user/login",
+  userReg: "/user/reg",
+  userForget: "/user/forget",
 }

@@ -5,7 +5,7 @@ block content
     - for (var i = 0; i < products.length; i ++)
       - item = products[i];
       div.product-section
-        a(href='products/'+item.id)
+        a(href='product/#{item.id}')
           div.product-item
             img(src=imgPrefix+item.img, alt="")
             div.product-detail

@@ -15,9 +15,9 @@ module.exports = {
     router.get('/', homeCtrl.index);
 
     _app.use('/', router);
-    _app.use('/users', users);
-    _app.use('/categories', categories);
-    _app.use('/products', products);
-    _app.use('/carts', carts);
+    _app.use('/user', users);
+    _app.use('/category', categories);
+    _app.use('/product', products);
+    _app.use('/cart', carts);
   }
 };
