@@ -29,16 +29,6 @@ var userCtrl = {
       rightContent: "注册",
       rightHref: routerConstant.userReg
     })
-
-    // security.hasLoginedUser(req, function(result) {
-    //   if (result === true) {
-    //     res.redirect(routerConstant.userIndex);
-    //   } else {
-    //     res.clearCookie("token");
-
-    //     // res.redirect(routerConstant.userLogin);
-    //   }
-    // })
   },
   loginAction: function(req, res, next) {
     var username = req.body.username;
@@ -70,13 +60,20 @@ var userCtrl = {
   forgetAction: function(req, res, next) {
 
   },
-  orderList: function(req, res, next) {
-
+  orderList: function(user, req, res, next) {
+    userService.getUserOrderList(user.id).then(function (orders) {
+      console.log(orders.length);
+      orders = orders || [];
+      res.render("user/orderList", {
+        title: "我的订单",
+        orders: orders
+      });
+    });
   },
   orderDetail: function(req, res, next) {
 
   },
-  addressList: function(req, res, next) {
+  addressList: function(user, req, res, next) {
 
   },
   addressAdd: function(req, res, next) {

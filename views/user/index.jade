@@ -7,17 +7,26 @@ block content
         img(src=user.headIco) 
       div.user-detail
         div.user-name
-          用户名
+          用户名: 
+          span= user.username
         
     div.app-section
-      a.list-item(href="/users/orderList")
+      a.list-item(href="/users/orders")
         div
           span 我的订单
           i
-      a.list-item(href="/users/addressList")
+      a.list-item(href="/users/addresses")
         div
           span 我的地址
           i
     div.app-section
-      a.app-button.dark-blue(href="/users/logout") 退出登录
-    
+      button.app-button.dark-blue#logout 退出登录
+
+block scriptBlock
+  script.
+    $("#logout").click(function() {
+      $.dialog(null, function() {
+        location.href = "/users/logout";
+      });
+    });
+

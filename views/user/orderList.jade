@@ -2,3 +2,24 @@ extends ../layout/layout.jade
 
 block content
   div.container
+    - if (orders.length <= 0)
+      div 你还没有订单 
+    - else 
+      - for (var i = 0; i < orders.length; i ++)
+        - item = orders[i];
+        div.order-section
+          h5 订单# #{item.order_no}
+          div.order-actions 
+            a
+            a 详细
+          table.short-info
+            tbody
+              tr
+                td 状态：
+                td 
+              tr
+                td 金额
+                td
+              tr
+                td 时间：
+                td
