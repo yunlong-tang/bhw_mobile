@@ -10,16 +10,16 @@ block content
         div.order-section
           h5 订单# #{item.order_no}
           div.order-actions 
-            a(href="")
-            a(href="user/") 详细
+            a(href="") Test#{item.action}
+            a(href="orderDetail") 详细
           table.short-info
             tbody
               tr
                 td 状态：
-                td 
+                td #{item.status}
               tr
-                td 金额
-                td
+                td 金额：
+                td #{item.order_amount}
               tr
                 td 时间：
-                td
+                td #{item.create_time}

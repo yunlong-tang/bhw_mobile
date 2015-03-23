@@ -74,6 +74,9 @@ a {
     position: absolute;
     right: 0px;
     top: 0px;
+    a {
+      color: @font-color;
+    }
   }
   .header-title {
     // display: inline-block;
@@ -180,6 +183,28 @@ a {
     .user-name {
       margin-top: 5px;
     }
+  }
+}
+.order-section {
+  padding: 10px 20px;
+  border-bottom: 1px solid #AAA;
+  text-overflow: ellipsis;
+  white-space: nowrap;  
+  overflow: hidden;
+  background-color: #FFF;
+  position: relative;
+  color: #444;
+  .order-actions{
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    a {
+      display: block;
+    }
+  }
+  table {
+    margin-top: 30px;
+    width: 100%;
   }
 }
 //Footer.less

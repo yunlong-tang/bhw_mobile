@@ -11,11 +11,11 @@ block content
           span= user.username
         
     div.app-section
-      a.list-item(href="/users/orders")
+      a.list-item(href="/user/orders")
         div
           span 我的订单
           i
-      a.list-item(href="/users/addresses")
+      a.list-item(href="/user/addresses")
         div
           span 我的地址
           i
@@ -26,7 +26,7 @@ block scriptBlock
   script.
     $("#logout").click(function() {
       $.dialog(null, function() {
-        location.href = "/users/logout";
+        location.href = "/user/logout";
       });
     });
 
