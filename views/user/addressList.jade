@@ -2,3 +2,12 @@ extends ../layout/layout.jade
 
 block content
   div.container
+    - if (addresses.length <= 0)
+      div.nothing-section 你还没有地址
+    - else 
+      - for (var i = 0; i < addresses.length; i ++)
+        - item = addresses[i];
+        div.app-section
+          a.black-font(href="address/#{item.id}") #{item.content}
+    div.app-section
+      a.app-button.yellow(href="address/add") 新增

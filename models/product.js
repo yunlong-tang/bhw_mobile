@@ -6,7 +6,7 @@ var ProductPhoto = require('./productPhoto.js');
 var prefix = require('../config/config').db.prefix;
 var tableName = prefix + 'goods';
 
-var arrtibutes = {
+var attributes = {
   name: {
     type: Sequelize.STRING
   },
@@ -34,7 +34,7 @@ var arrtibutes = {
   }
 };
 
-var Product = sequelize.define('Product', arrtibutes, {
+var Product = sequelize.define('Product', attributes, {
   timestamps: false,
   tableName: tableName
 });

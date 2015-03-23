@@ -5,7 +5,7 @@ var sequelize = require('./index');
 var prefix = require('../config/config').db.prefix;
 var tableName = prefix + 'goods_photo_relation';
 
-var arrtibutes = {
+var attributes = {
   productId: {
     type: Sequelize.INTEGER,
     field: "goods_id",
@@ -17,7 +17,7 @@ var arrtibutes = {
   }
 };
 
-var ProductPhotoRelation = sequelize.define("ProductPhotoRelation", arrtibutes, {
+var ProductPhotoRelation = sequelize.define("ProductPhotoRelation", attributes, {
   timestamps: false,
   tableName: tableName
 });

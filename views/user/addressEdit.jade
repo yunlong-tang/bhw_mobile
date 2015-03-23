@@ -1,0 +1,26 @@
+extends ../layout/layout.jade
+
+block content
+  div.container
+    - var action = "add"
+    - var submit = "新增"
+    - if (address)
+      - var accept_name = address.accept_name
+      - var mobile = address.mobile
+      - action = address.id + "/edit"
+      - submit = "提交"
+    form(id="", method="", action=action)
+      div.app-section
+        input.app-input(placeholder="姓名" value=accept_name) 
+        input.app-input(placeholder="手机号" value=mobile) 
+      div.app-section
+        select.app-select(type="selection")
+        select.app-select(type="selection")
+        select.app-select(type="selection")
+      div.app-section
+        input.app-input.yellow(type="submit" value=submit)
+        - if (address)
+          a.app-button.red 删除
+
+block scriptBlock
+  scritp.

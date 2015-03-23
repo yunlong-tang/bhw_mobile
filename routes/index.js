@@ -13,6 +13,7 @@ module.exports = {
     var _app = app;
 
     router.get('/', homeCtrl.index);
+    router.get('/areas', homeCtrl.getAreas);
 
     _app.use('/', router);
     _app.use('/user', users);

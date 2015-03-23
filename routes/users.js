@@ -16,8 +16,12 @@ router.post('/reg', userCtrl.regAction);
 router.get('/forget', userCtrl.specialTokenVerify, userCtrl.forget);
 router.post('/forget', userCtrl.forgetAction);
 
-router.get('/orders', userCtrl.tokenVerify, userCtrl.orderList);
-router.get('/addresses', userCtrl.tokenVerify, userCtrl.addressList);
+router.get('/order', userCtrl.tokenVerify, userCtrl.orderList);
+router.get('/order/:id', userCtrl.tokenVerify, userCtrl.orderDetail);
+
+router.get('/address', userCtrl.tokenVerify, userCtrl.addressList);
+router.get('/address/add', userCtrl.tokenVerify, userCtrl.addressCreate);
+router.get('/address/:id', userCtrl.tokenVerify, userCtrl.addressEdit);
 
 
 module.exports = router;

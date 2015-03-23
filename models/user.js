@@ -4,7 +4,7 @@ var sequelize = require('./index');
 var prefix = require('../config/config').db.prefix;
 var tableName = prefix + 'user';
 
-var arrtibutes = {
+var attributes = {
   username: {
     type: Sequelize.STRING
   },
@@ -20,7 +20,7 @@ var arrtibutes = {
   },
 };
 
-var User = sequelize.define('User', arrtibutes, {
+var User = sequelize.define('User', attributes, {
   timestamps: false,
   tableName: tableName
 });

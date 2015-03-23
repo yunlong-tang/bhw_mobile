@@ -37,7 +37,7 @@ var userCtrl = {
       if (user) {
         var token = security.serializeAuthTicket(username, password);
         res.cookie("token", token, {
-          expires: new Date(Date.now() + 24 * 60 * 3600)
+          expires: new Date(Date.now() + 24 * 60 * 60 * 1000)
         });
         res.redirect(routerConstant.userIndex);
       } else {
@@ -62,7 +62,6 @@ var userCtrl = {
   },
   orderList: function(user, req, res, next) {
     userService.getUserOrderList(user.id).then(function (orders) {
-      console.log(orders.length);
       orders = orders || [];
       res.render("user/orderList", {
         title: "我的订单",
@@ -74,14 +73,34 @@ var userCtrl = {
 
   },
   addressList: function(user, req, res, next) {
-
+    userService.getUserAddresses(user.id).then(function (addresses) {
+      addresses = addresses || [];
+      res.render('user/addressList', {
+        title: "我的地址",
+        addresses: addresses
+      })
+    })
   },
-  addressAdd: function(req, res, next) {
-
+  addressCreate: function(user, req, res, next) {
+    res.render('user/addressEdit', {
+      title: "新增地址"
+    });
   },
-  addressEdit: function(req, res, next) {
-
+  addressCreateAction: function () {
+    
   },
+  addressEdit: function(user, req, res, next) {
+    userService.getAddressById(req.params.id).then(function (address) {
+      res.render('user/addressEdit', {
+        title: "编辑地址",
+        address: address
+      });
+    })
+  },
+  addressEditAction: function (argument) {
+    
+  },
+
   tokenVerify: function(req, res, next) {
     security.hasLoginedUser(req, function(result) {
       if (result) {

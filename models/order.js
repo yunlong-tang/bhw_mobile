@@ -1,11 +1,12 @@
 var Sequelize = require('sequelize');
 var sequelize = require('./index');
+var format = require('date-util');
 
 
 var prefix    = require('../config/config').db.prefix;
 var tableName = prefix + 'order';
 
-var arrtibutes = {
+var attributes = {
   order_no           : {type: Sequelize.STRING, field: "order_no"},
   user_id            : {type: Sequelize.INTEGER, field: "user_id"},
   pay_type           : {type: Sequelize.INTEGER, field: "pay_type"},
@@ -52,9 +53,68 @@ var arrtibutes = {
 };
 
 
-var Order = sequelize.define('Order', arrtibutes, {
+var Order = sequelize.define('Order', attributes, {
   timestamps: false,
-  tableName: tableName
+  tableName: tableName,
+  getterMethods: {
+    orderStatus: function () {
+      return statusENUM[getOrderStatus(this)];
+    },
+    createAt: function () {
+      var date = new Date(this.create_time).format("yyyy-mm-dd HH:MM:ss", true);
+      return date;
+    }
+  }
 });
+
+var statusENUM = ["未知","未付款等待发货","等待付款","已发货","已付款等待发货","已取消","已完成","已退款","部分发货","部分退款","部分退款"];
+var getOrderStatus = function(order) {
+  //刚生成订单未付款
+  if (order.status == 1) {
+    //选择货到付款
+    if (order.pay_type == 0) {
+      if (order.distribution_status == 0) {
+        return 1;
+      } else if (order.distribution_status == 1) {
+        return 3;
+      } else if (order.distribution_status == 2) {
+        return 8;
+      }
+      //选择在线支付
+    } else {
+      return 2;
+    }
+    //已经付款
+  } else if (order.status == 2) {
+    if (order.distribution_status == 0) {
+      return 4;
+    } else if (order.distribution_status == 1) {
+      return 3;
+    } else if (order.distribution_status == 2) {
+      return 8;
+    }
+    //3,取消或者作废订单
+  } else if (order.status == 3 || order.status == 4) {
+    return 5;
+    //4,完成订单
+  } else if (order.status == 5) {
+    return 6;
+    //5,退款
+  } else if (order.status == 6) {
+    return 7;
+    //6,部分退款
+  } else if (order.status == 7) {
+    //发货
+    if (order.distribution_status == 1) {
+      return 10;
+    }
+    //未发货
+    else {
+      return 9;
+    }
+  }
+  return 0;
+};
+
 
 module.exports = Order;

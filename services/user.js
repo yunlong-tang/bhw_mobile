@@ -3,8 +3,12 @@ var Order = require('../models/order.js');
 var Address = require('../models/address.js');
 var Cart = require('../models/cart.js');
 var Order = require('../models/order.js');
+var Areas = require('../models/areas.js');
 var util = require('./util.js');
 var config = require('../config/config.js');
+var _ = require('underscore');
+
+var areasData = null;
 
 var userService = {
   loginUser: function (username, password) {
@@ -31,7 +35,69 @@ var userService = {
         if_del: 0
       }
     });
+  },
+
+  getAreas: function (callback) {
+    callback = callback || util.noop;
+    if (areasData) {
+      callback(areasData);
+    } else {
+      Areas.findAll().then(function (results) {
+        areasData = [];
+        for (var i = 0; i < results.length; i++) {
+          var temp = results[i];
+          areasData.push({
+            area_id: temp.area_id,
+            parent_id: temp.parent_id,
+            area_name: temp.area_name
+          });
+        }
+        callback(areasData);
+      })
+    }
+  },
+
+  getUserAddresses: function (userId) {
+    return Address.findAll({
+      where: {
+        user_id: userId
+      }
+    }).then(function (results) {
+      var data = [];
+      for (var i = 0; i < results.length; i++) {
+        var temp = results[i];
+        data.push({
+          id: temp.id,
+          content: getDisplayAddress(temp)
+        });
+      };
+      return data;
+    });
+  },
+
+  getAddressById: function (id) {
+    return Address.find({where: {
+      id: id
+    }});
   }
+
 };
+userService.getAreas(function () {
+  console.log("cache areas ok!");
+});
+var getDisplayAddress = function (obj) {
+  if (areasData) {
+    var str = obj.accept_name + ' ';
+    var temp = [obj.province, obj.city, obj.area];
+    temp = temp.map(function (value) {
+      _.find(areasData, function (item) {
+        return item.area_id === value;
+      })
+    })
+    str += temp.join('');
+    str += ' ' + obj.address + ' ' + obj.mobile;
+    return str;
+  }
+}
 
 module.exports = userService;

@@ -3,23 +3,23 @@ extends ../layout/layout.jade
 block content
   div.container
     - if (orders.length <= 0)
-      div 你还没有订单 
+      div.nothing-section 你还没有订单 
     - else 
       - for (var i = 0; i < orders.length; i ++)
         - item = orders[i];
         div.order-section
           h5 订单# #{item.order_no}
           div.order-actions 
-            a(href="") Test#{item.action}
-            a(href="orderDetail") 详细
+            a.app-small-button.red(href="#{item.actionURL}") #{item.actionText}
+            a.app-small-button.yellow(href="orderDetail") 详细
           table.short-info
             tbody
               tr
                 td 状态：
-                td #{item.status}
+                td #{item.orderStatus}
               tr
                 td 金额：
                 td #{item.order_amount}
               tr
                 td 时间：
-                td #{item.create_time}
+                td #{item.createAt}
