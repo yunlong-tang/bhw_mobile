@@ -34,4 +34,14 @@ util.md5 = function(str) {
 
 util.noop = function () {};
 
+util.random = function (min, max) {
+  if (arguments.length == 1) {
+    max = min;
+    min = 0;
+  } 
+  var range = max - min;
+  var rand = Math.random();
+  return min + Math.round(rand * range);
+};
+
 module.exports = util;
