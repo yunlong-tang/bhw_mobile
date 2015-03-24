@@ -79,7 +79,21 @@ var userService = {
     return Address.find({where: {
       id: id
     }});
-  }
+  },
+
+  createAddress: function (address) {
+    return Address.create(address);
+  },
+
+  updateAddress: function (address) {
+    return Address.upsert(address);
+  },
+
+  removeAddress: function (id) {
+    this.getAddressById(id).then(function (address) {
+      return address.destroy();
+    })
+  },
 
 };
 userService.getAreas(function () {
@@ -90,9 +104,10 @@ var getDisplayAddress = function (obj) {
     var str = obj.accept_name + ' ';
     var temp = [obj.province, obj.city, obj.area];
     temp = temp.map(function (value) {
-      _.find(areasData, function (item) {
+      var data = _.find(areasData, function (item) {
         return item.area_id === value;
       })
+      return data.area_name;
     })
     str += temp.join('');
     str += ' ' + obj.address + ' ' + obj.mobile;

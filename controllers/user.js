@@ -7,7 +7,8 @@ var userCtrl = {
   index: function(user, req, res, next) {
     res.render("user/index", {
       title: "我的",
-      user: user
+      user: user,
+      hideBackButton: true
     })
   },
   reg: function(req, res, next) {
@@ -86,8 +87,21 @@ var userCtrl = {
       title: "新增地址"
     });
   },
-  addressCreateAction: function () {
-    
+  addressCreateAction: function (user, req, res, next) {
+    var address = {
+      user_id: user.id,
+      accept_name: req.body.accept_name,
+      mobile: req.body.mobile,
+      province: req.body.province,
+      city: req.body.city,
+      area: req.body.area,
+      address: req.body.address
+    };
+    userService.createAddress(address).then(function (address) {
+      if (address) {
+        res.redirect(routerConstant.addressList);
+      }
+    });
   },
   addressEdit: function(user, req, res, next) {
     userService.getAddressById(req.params.id).then(function (address) {
@@ -97,7 +111,7 @@ var userCtrl = {
       });
     })
   },
-  addressEditAction: function (argument) {
+  addressEditAction: function () {
     
   },
 

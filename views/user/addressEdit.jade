@@ -5,22 +5,29 @@ block content
     - var action = "add"
     - var submit = "新增"
     - if (address)
+      - var select = [address.province, address.city, address.area];
       - var accept_name = address.accept_name
       - var mobile = address.mobile
+      - var detail = address.address
       - action = address.id + "/edit"
       - submit = "提交"
-    form(id="", method="", action=action)
+    form(id="", method="post", action=action)
       div.app-section
-        input.app-input(placeholder="姓名" value=accept_name) 
-        input.app-input(placeholder="手机号" value=mobile) 
+        input.app-input(placeholder="姓名" value=accept_name name="accept_name") 
+        input.app-input(placeholder="手机号" value=mobile name="mobile") 
       div.app-section
-        select.app-select(type="selection")
-        select.app-select(type="selection")
-        select.app-select(type="selection")
+        select.app-select#province(name="province")
+        select.app-select#city(name="city")
+        select.app-select#area(name="area")
+      div.app-section
+        input.app-input(placeholder="街道" value=detail name="address")
       div.app-section
         input.app-input.yellow(type="submit" value=submit)
         - if (address)
           a.app-button.red 删除
 
 block scriptBlock
-  scritp.
+  script.
+    $(function($){
+      initAddressSelection([#{select}]);
+    });
