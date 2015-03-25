@@ -89,11 +89,17 @@ a {
   .f(17px);
   .header-left {
     position: absolute;
-    left: 0px;
+    left: 10px;
+    .f(25px);
+    span {
+      .f(17px);
+      float: right;
+      margin-left: 5px;
+    }
   }
   .header-right {
     position: absolute;
-    right: 0px;
+    right: 10px;
     top: 0px;
     a {
       color: @font-color;
@@ -101,6 +107,7 @@ a {
   }
   .header-title {
     // display: inline-block;
+    .f(20px);
   }
 }
 //Layout.less
@@ -239,19 +246,26 @@ footer {
     border-top: 1px solid #c4c4c4;
     background-color: @gray-color;
     height: 44px;
-    line-height: 44px;
     a {
       text-decoration: none;
       color: @footer-color;
+      width: 60px;
+      display: block;
+      &.active {
+        color: #007aff;
+      }
     }
     ul {
       list-style: none;
       text-align: center;
+      padding-top: 4px;
       .f(12px);
       li {
         display: inline-block;
-        &+li {
-          margin-left: 5px;
+        i {
+          display: block;
+          height: 23px;
+          .f(23px);
         }
       }
     }

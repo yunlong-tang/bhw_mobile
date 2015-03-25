@@ -5,6 +5,7 @@ html
     title= "百花味"
     meta(name='viewport', content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui')
     link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css')
     script(src='/javascripts/lib/zepto/zepto.min.js')
     script(src='/javascripts/lib/zepto/fx.js')
     script(src='/javascripts/dialog.js')
@@ -12,7 +13,9 @@ html
   body
     header
       div.header-bar
-        div.header-left#back(class=hideBackButton ? 'hide' : 'show') 后退
+        div.header-left#back(class=hideBackButton ? 'hide' : 'show') 
+          i.ion-chevron-left
+          span 后退
         div.header-title= title
         div.header-right#header-right
           a(href=rightHref)= rightContent
@@ -23,21 +26,26 @@ html
       div.footer-bar
         ul
           li: a(href='/')
-              i
+              i.ion-flash
               span 闪购
-          li: a(href='/')
-              i
+          li: a(href='/product')
+              i.ion-heart
               span 产品
           li: a(href='/cart')
-              i 
+              i.ion-ios-cart
               span 已选
           li: a(href='/user')
-              i
+              i.ion-android-person
               span 我的
 
     block scriptBlock
 
     script.
-      $("#back").click(function() {
-        window.history.back();
+      $(function () {
+        $("#back").click(function() {
+          window.history.back();
+        });
+
+        var path = "/" + location.pathname.split('/')[1];
+        $("li a[href='"+path+"']").addClass("active");
       })

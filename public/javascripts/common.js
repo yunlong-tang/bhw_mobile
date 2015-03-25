@@ -76,3 +76,7 @@ function getAreasData (callback) {
 function getMobileCode (mobile) {
 
 }
+
+function joinCart () {
+  
+}
