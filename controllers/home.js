@@ -4,7 +4,6 @@ var userService = require('../services/user.js');
 var homeCtrl = {
   index: function (req, res, next) {
     Product.findAll().then(function (result) {
-      console.log(result[0].sellPrice);
       res.render('site/index', {
         hideBackButton: true,
         title: "闪购",

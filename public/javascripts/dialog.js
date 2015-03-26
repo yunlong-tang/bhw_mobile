@@ -12,7 +12,8 @@
   var hasInit = false;
   var init = function () {
     $("body").append(template);
-    $dialog = $(".app-dialog-container");
+    $container = $(".app-dialog-container");
+    $dialog = $container.find(".app-dialog");
     if ($dialog) {
       hasInit = true;
       $title = $dialog.find(".title");
@@ -30,20 +31,31 @@
     // failed: "Cancel"
   };
   var noop = function () {
-    $dialog.removeClass("show enable");
+    $container.fadeOut();
   };
   $.dialog = function (obj, success, failed) {
+    success = success || function (){};
+    failed = failed || function (){};
     if (!hasInit) {
       init();
     }
     obj = $.extend(defaultObj, obj);
-    $dialog.addClass("show");
+    $container.fadeIn();
     $title.text(obj.title || "");
     $text.text(obj.text || "");
     $success.text(obj.success || "").click(success).click(noop);
     $failed.text(obj.failed || "").click(failed).click(noop);
+  };
+
+  $.toast = function (msg) {
+    if (!hasInit) {
+      init();
+    }
+    $dialog.children().hide();
+    $container.fadeIn();
+    $text.text(msg).show();
     setTimeout(function () {
-      $dialog.addClass("enable");
-    }, 1);
+      $container.fadeOut();
+    }, 1500);
   }
 })(Zepto)

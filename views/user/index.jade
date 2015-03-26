@@ -25,7 +25,7 @@ block content
 block scriptBlock
   script.
     $("#logout").click(function() {
-      $.dialog(null, function() {
+      $.dialog({}, function() {
         location.href = "/user/logout";
       });
     });

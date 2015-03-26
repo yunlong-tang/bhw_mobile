@@ -2,10 +2,30 @@ extends ../layout/layout.jade
 
 block content
   div.container
-    form(id="reg", method="post", action="/user/login")
+    form(id="login", name="login" method="post", action="/user/login")
       div.app-section
         input.app-input(name="username", placeholder="手机号")
         input.app-input(name="password", placeholder="密码" type="password")
       div.app-section
         button.app-button.green(type="submit") 登录
         a.app-button.dark-blue(href="/user/forget") 忘记密码
+
+block scriptBlock
+  script.
+    $(function () {
+      var fileds = [{
+        name: "username",
+        display: "手机号",
+        rules: "required"
+      },{
+        name: "password",
+        display: "密码",
+        rules: "required"
+      }];
+      var validator = new FormValidator("login", fileds, function(errors, event) {
+        if(errors && errors.length > 0) {
+          $.toast(errors[0].message);
+        }
+      });
+      validator.setMessage("required", "请输入%s!");
+    })        
