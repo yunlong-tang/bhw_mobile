@@ -15,7 +15,8 @@ var userCtrl = {
     res.render("user/reg", {
       title: "注册",
       rightContent: "登录",
-      rightHref: routerConstant.userLogin
+      rightHref: routerConstant.userLogin,
+      hideBackButton: true
     })
   },
 
@@ -55,7 +56,8 @@ var userCtrl = {
     res.render("user/forget", {
       title: "忘记密码",
       rightContent: "登录",
-      rightHref: routerConstant.userLogin
+      rightHref: routerConstant.userLogin,
+      hideBackButton: true
     })
   },
   forgetAction: function(req, res, next) {

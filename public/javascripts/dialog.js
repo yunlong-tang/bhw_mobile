@@ -6,20 +6,26 @@
         <div class=\"button success\"><\/div>\
         <div class=\"button failed\"><\/div>\
       <\/div>\
+      <div class=\"app-toast\">\
+        <div class=\"message\">\
+        <\/div>\
+      <\/div>\
     <\/div>";
 
-  var $title, $text, $success,$failed,$dialog;
+  var $title, $text, $success,$failed,$dialog,$containe,$toast;
   var hasInit = false;
   var init = function () {
     $("body").append(template);
     $container = $(".app-dialog-container");
     $dialog = $container.find(".app-dialog");
+    $toast = $container.find(".app-toast");
     if ($dialog) {
       hasInit = true;
       $title = $dialog.find(".title");
       $text = $dialog.find(".text");
       $success = $dialog.find(".success");
       $failed = $dialog.find(".failed");
+      $message = $toast.find(".message");
     } else {
       hasInit = false;
     }
@@ -39,6 +45,7 @@
     if (!hasInit) {
       init();
     }
+    $toast.hide();
     obj = $.extend(defaultObj, obj);
     $container.fadeIn();
     $title.text(obj.title || "");
@@ -48,14 +55,16 @@
   };
 
   $.toast = function (msg) {
+    msg = msg || "";
     if (!hasInit) {
       init();
     }
-    $dialog.children().hide();
+    $dialog.hide();
+    $toast.show();
     $container.fadeIn();
-    $text.text(msg).show();
+    $message.text(msg);
     setTimeout(function () {
       $container.fadeOut();
-    }, 1500);
+    }, 1000);
   }
 })(Zepto)

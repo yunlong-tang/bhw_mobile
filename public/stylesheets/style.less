@@ -312,12 +312,6 @@ footer {
 //Dialog.less
 
 .app-dialog-container {
-  &.show {
-    display: block;
-  }
-  &.enable{
-    opacity: 1;
-  }
   display: none;
   position: fixed;
   z-index: 5000;
@@ -328,11 +322,7 @@ footer {
   height: 100%;
   width: 100%;
   background-color: rgba(0, 0, 0, 0.8);
-  opacity: 0;
   overflow: hidden;
-  -webkit-transition: opacity .282s ease-in-out;
-  transition: opacity .282s ease-in-out;
-  font-family: Roboto, sans-serif;
   .f(12px);
   .app-dialog {
     position: absolute;
@@ -374,6 +364,25 @@ footer {
     }
     .failed {
       color: #E54;
+    }
+  }
+  .app-toast {
+    position: absolute;
+    bottom: 50%;
+    width: 80%;
+    margin: 0 10%;
+    background-color: #eeeeea;
+    transform: translateY(50%);
+    -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, 0.85);
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.85);
+    color: #777;
+
+    .message {
+      font-size: 16px;
+      font-weight: 400;
+      text-align: center;
+      height: 30px;
+      line-height: 30px;
     }
   }
 }

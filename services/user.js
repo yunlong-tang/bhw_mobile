@@ -96,6 +96,7 @@ var userService = {
   },
 
 };
+
 userService.getAreas(function () {
   console.log("cache areas ok!");
 });
