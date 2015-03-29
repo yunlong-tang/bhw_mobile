@@ -75,6 +75,22 @@ var userService = {
     });
   },
 
+  getUserDefaultAddress: function (userId) {
+    return Address.find({
+      where: {
+        id: userId,
+        default: true
+      }
+    }).then(function (result) {
+      var address = {
+        accept_name: result.accept_name,
+        mobile: result.mobile,
+        detail: getAddressDetail(result)
+      }
+      return address;
+    });
+  },
+
   getAddressById: function (id) {
     return Address.find({where: {
       id: id
@@ -100,6 +116,20 @@ var userService = {
 userService.getAreas(function () {
   console.log("cache areas ok!");
 });
+
+var getAddressDetail = function (obj) {
+  var str = '';
+  var temp = [obj.province, obj.city, obj.area];
+  temp = temp.map(function (value) {
+    var data = _.find(areasData, function (item) {
+      return item.area_id === value;
+    })
+    return data.area_name;
+  })
+  str += temp.join(' ');
+  str += ' ' + obj.address;
+  return str;
+}
 var getDisplayAddress = function (obj) {
   if (areasData) {
     var str = obj.accept_name + ' ';

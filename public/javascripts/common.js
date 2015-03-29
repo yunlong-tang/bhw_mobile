@@ -1,18 +1,20 @@
-function initAddressSelection (params) {
+function initAddressSelection(params) {
   var $province = $('#province');
   var $city = $('#city');
   var $area = $('#area');
-  getAreasData(function (areasData) {
+  getAreasData(function(areasData) {
     var areasData = areasData;
-    var provinces = areasData.filter(function (item) {return item.parent_id == 0;});
+    var provinces = areasData.filter(function(item) {
+      return item.parent_id == 0;
+    });
     var data = [new Option("-- 请选择 省(直辖市) --")];
     for (var i = 0; i < provinces.length; i++) {
       var item = provinces[i];
       data.push(new Option(item.area_name, item.area_id));
     };
-    $province.append(data).on("change", function (event) {
+    $province.append(data).on("change", function(event) {
       var id = $(this).val();
-      var results = areasData.filter(function (item) {
+      var results = areasData.filter(function(item) {
         return item.parent_id == id;
       })
       var data = [new Option("-- 请选择 城市 --")];
@@ -22,18 +24,18 @@ function initAddressSelection (params) {
       $city.html(data);
       $area.html(new Option("-- 请选择 城区 --"));
     });
-    var cityData = [new Option("-- 请选择 城市 --")];      
+    var cityData = [new Option("-- 请选择 城市 --")];
     if (params && params.length > 0) {
-      var results = areasData.filter(function (item) {
+      var results = areasData.filter(function(item) {
         return item.parent_id == params[0];
       })
       for (var i = 0; i < results.length; i++) {
         cityData.push(new Option(results[i].area_name, results[i].area_id));
       };
     }
-    $city.append(cityData).on('change', function (event) {
+    $city.append(cityData).on('change', function(event) {
       var id = $(this).val();
-      var results = areasData.filter(function (item) {
+      var results = areasData.filter(function(item) {
         return item.parent_id == id;
       })
       var data = [new Option("-- 请选择 城市 --")];
@@ -43,9 +45,9 @@ function initAddressSelection (params) {
       $area.html(data);
     });
 
-    var areaData = [new Option("-- 请选择 城区 --")]; 
+    var areaData = [new Option("-- 请选择 城区 --")];
     if (params && params.length > 0) {
-      var results = areasData.filter(function (item) {
+      var results = areasData.filter(function(item) {
         return item.parent_id == params[1];
       })
       for (var i = 0; i < results.length; i++) {
@@ -62,21 +64,43 @@ function initAddressSelection (params) {
 };
 
 var areasData = null;
-function getAreasData (callback) {
+
+function getAreasData(callback) {
   if (areasData) {
     callback(areasData);
     return;
-  } 
-  $.get('/areas', function (data) {
+  }
+  $.get('/areas', function(data) {
     areasData = data;
     callback(data);
   });
 }
 
-function getMobileCode (mobile) {
+function getMobileCode(mobile) {
 
 }
 
-function joinCart () {
-  
+function joinCart(id, num, success, error) {
+  success = success || $.noop;
+  error = error || success;
+  var data = {
+    id: id,
+    num: num,
+  }
+  $.ajax({
+    url: '/site/cart/add',
+    type: 'POST',
+    dataType: 'json',
+    contentType: 'application/json',
+    data: JSON.stringify(data),
+    success: success,
+    error: error
+  })
+}
+
+var constants = {
+  addCartSuccessTitle: "添加成功!",
+  addCartSuccessText: "产品已成功添加到购物车 :)",
+  addCartSuccessBtn1: "继续购物", 
+  addCartSuccessBtn2: "去结算"
 }

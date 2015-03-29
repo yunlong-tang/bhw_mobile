@@ -11,7 +11,10 @@ block content
       div.product-info
         div= product.name
         div= product.marketPrice
-        div= product.sellPrice
+        div
+          i.ion-social-yen
+          span= product.sellPrice
+        input#productId(type="hidden" value=product.id)
 
       div.product-detail
         div= "商品详情"
@@ -25,8 +28,20 @@ block scriptBlock
   script(src='/javascripts/lib/pgwslider/pgwslider.min.js')
   link(rel='stylesheet', href='/javascripts/lib/pgwslider/pgwslider.css')
   script.
-    $('#product-slider').pgwSlider({
-      displayList: false,
-      transitionEffect: 'fading',
+    $(function() {
+      $('#product-slider').pgwSlider({
+        displayList: false,
+        transitionEffect: 'fading',
 
+      });
+
+      $('.add-cart').click(function() {
+        var id = $("#productId").val();
+        joinCart(id, 1, function () {
+
+        });
+      })
     });
+
+
+

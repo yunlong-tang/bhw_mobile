@@ -55,7 +55,7 @@
   };
 
   $.toast = function (msg) {
-    msg = msg || "";
+    msg = msg || "系统错误，请稍后再试~";
     if (!hasInit) {
       init();
     }
@@ -66,5 +66,8 @@
     setTimeout(function () {
       $container.fadeOut();
     }, 1000);
-  }
+  };
+
+  $.noop = function () {};
+
 })(Zepto)

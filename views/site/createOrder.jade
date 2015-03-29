@@ -1,0 +1,51 @@
+extends ../layout/layout.jade
+
+block content
+  div.container
+    div.app-section
+      div 收货信息
+      div
+        p #{address.accept_name} #{address.mobile}
+        p #{address.detail}
+
+    div.app-section
+      table
+        tbody
+          tr
+            td 配送方式：
+            td
+              select
+              
+          tr
+            td 支付方式：
+            td
+              select
+                option 支付宝
+
+    div.app-section
+      table.order-item-list
+        tbody
+          - for (var i = 0; i < products.length; i ++)
+            - var product = products[i];
+            tr
+              td.img
+                img(src=imgPrefix+product.img width="30px" height="30px")
+              td.name= product.name
+              td.num= product.num
+              td.price
+                div
+                  i.ion-social-yen
+                  span= product.sellPrice
+
+    div.app-section
+      div
+        div 小计
+        div
+      div
+        div 运费
+        div
+      div
+        div 总计
+        div
+      div.create-order
+        a.btn= "提交订单"

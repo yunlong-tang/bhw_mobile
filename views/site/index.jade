@@ -10,13 +10,30 @@ block content
             img(src=imgPrefix+item.img, alt="")
             div.product-detail
               div.product-name= item.name
-              div 
-                span.product-price= item.sellPrice
-                span.product-purchase.btn 立即购买
+              div.product-bottom
+                div.left
+                  i.ion-social-yen
+                  span.product-price= item.sellPrice
+                span.product-purchase.btn(data-id=item.id) 立即购买
 
 block scriptBlock
   script.
-    $(".product-purchase").click(function(event) {
-      console.log("add to cart");
-      return false;
+    $(function(){
+      $(".product-purchase").click(function() {
+        var id = $(this).data("id");
+        joinCart(id, 1, function() {
+          var obj = {
+            title: constants.addCartSuccessTitle,
+            text: constants.addCartSuccessText,
+            success: constants.addCartSuccessBtn1,
+            failed: constants.addCartSuccessBtn2
+          }
+          $.dialog(obj,$.noop, function(){
+            location.href = "/site/cart";
+          });
+        }, function () {
+          $.toast();
+        });
+        return false;
+      })
     })

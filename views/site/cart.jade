@@ -2,9 +2,48 @@ extends ../layout/layout.jade
 
 block content
   div.container
-    div.app-section
-      #{products}
-      div.cart-list
-        - for 
-        div.item
-      div.totals
+    - if (products && products.length > 0)
+      div.app-section
+        div.cart-list
+          - for (var i = 0; i < products.length; i ++)
+            - var product = products[i];
+              div.item
+                div.left
+                  a(href="/product/#{product.id}")
+                    img(src=imgPrefix+product.img)
+                div.right
+                  div.name
+                    a(href="/product/#{product.id}")= product.name
+                  div.qty-editor
+                    span.minus.ion-minus(data-id=product.id)
+                    span.qty-val= product.num
+                    span.plus.ion-plus(data-id=product.id)
+                div.qty
+                  div.p-price
+                    i.ion-social-yen
+                    span= (product.num*product.sellPrice).toFixed(2)
+                  div.delete.ion-ios-trash-outline(data-id=product.id)
+        div.totals= "商品总额: "
+          i.ion-social-yen
+          span
+        div.create-order
+          a.btn(href="/site/order/create?type=cart")= "去结算"
+
+    - else
+      div.nothing-section 你还没有东西在购物车~
+
+block scriptBlock
+  script.
+    $(function() {
+      var total = 0;
+      $(".p-price").find("span").each(function() {
+        total += Number($(this).text());
+      })
+      $(".totals span").text(total.toFixed(2));
+      $(".qty-editor .minus").click(function() {
+          
+      });
+      $(".qty-editor .plus").click(function() {
+        
+      });
+    })

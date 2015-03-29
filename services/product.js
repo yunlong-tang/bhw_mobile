@@ -15,6 +15,18 @@ var productService = {
         }]
       }]
     });
+  },
+
+  getProductsWithIds: function (ids, isRaw) {
+    isRaw = isRaw || false;
+    return Product.findAll({
+      where: {
+        id: {
+          in: ids
+        }
+      },
+      attributes: ['id', 'name', 'img', 'sellPrice']
+    }, {raw: isRaw});
   }
 };
 

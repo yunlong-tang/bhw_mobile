@@ -33,7 +33,7 @@ html
           li: a(href='/product')
               i.ion-heart
               span 产品
-          li: a(href='/cart')
+          li: a(href='/site/cart')
               i.ion-ios-cart
               span 已选
           li: a(href='/user')
@@ -49,5 +49,9 @@ html
         });
 
         var path = "/" + location.pathname.split('/')[1];
-        $("li a[href='"+path+"']").addClass("active");
+        if (path == "/") {
+          $("li a[href='"+path+"']").addClass("active");
+        } else {
+          $("li a[href^='"+path+"']").addClass("active");
+        }
       })

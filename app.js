@@ -36,9 +36,15 @@ app.use(function(req, res, next) {
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
-  console.log("add develop")
   app.use(function(err, req, res, next) {
     res.status(err.status || 500);
+    if (err.api) {
+      res.send({
+        success: false,
+        message: err.message
+      });
+      return;
+    }
     res.render('error', {
       message: err.message,
       error: err
@@ -48,12 +54,20 @@ if (app.get('env') === 'development') {
 
 // production error handler
 // no stacktraces leaked to user
-app.use(function(err, req, res, next) {
+app.use(function(err, req, res, next) {  
   res.status(err.status || 500);
-  res.render('error', {
-    message: err.message,
-    error: {}
-  });
+  if (err.api) {
+    res.send({
+      success: false,
+      message: err.message
+    });
+    return;
+  } else {
+    res.render('error', {
+      message: err.message,
+      error: {}
+    });
+  } 
 });
 
 
