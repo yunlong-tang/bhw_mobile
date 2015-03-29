@@ -24,8 +24,7 @@ var productService = {
         id: {
           in: ids
         }
-      },
-      attributes: ['id', 'name', 'img', 'sellPrice']
+      }
     }, {raw: isRaw});
   }
 };

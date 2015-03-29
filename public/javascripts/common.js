@@ -98,9 +98,31 @@ function joinCart(id, num, success, error) {
   })
 }
 
+function getMobileCode (mobile, type, callback) {
+  var url;
+  switch(type) {
+    case VerifyCodeType.Reg:
+      url = '/user/mobilecode/reg';
+      break;
+    case VerifyCodeType.ResetPassword:
+      url = 'user/mobilecode/resetPassword'
+      break;
+  }
+  url += '?mobile=' + mobile;
+  $.get(url, callback);
+}
+
 var constants = {
   addCartSuccessTitle: "添加成功!",
   addCartSuccessText: "产品已成功添加到购物车 :)",
   addCartSuccessBtn1: "继续购物", 
-  addCartSuccessBtn2: "去结算"
+  addCartSuccessBtn2: "去结算",
+  confirm: "我确定",
+  cancel: "点错了",
+  logoutTitle: "退出提示!",
+  logoutText: "您确定退出登录么?"
+}
+var VerifyCodeType = {
+  "Reg": 0,
+  "ResetPassword": 1
 }

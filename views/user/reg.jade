@@ -2,14 +2,52 @@ extends ../layout/layout.jade
 
 block content
   div.container
-    form(id="reg", method="post", action="/user/reg")
+    form(name="reg", method="post", action="/user/reg")
       div.app-section
-        input.app-input(placeholder="手机号")
+        input.app-input(name="username" placeholder="手机号")
       div.app-section
-        input.app-input(placeholder="请输入登录密码" type="password")
-        input.app-input(placeholder="请再一次输入密码" type="password")
+        input.app-input(name="password" placeholder="请输入登录密码" type="password")
+        input.app-input(name="confirmPassword" placeholder="请再一次输入密码" type="password")
       div.app-section
-        input.app-input(placeholder="请输入收到的验证码")
-        button.app-button.dark-blue 发送验证码
+        input.app-input(name="verifyCode" placeholder="请输入收到的验证码")
+        a.app-button.dark-blue#sendCode 发送验证码
       div.app-section
         button.app-button.green 注册
+
+block scriptBlock
+  script.
+    $(function () {
+      var fileds = [{
+        name: "username",
+        display: "手机号",
+        rules: "required"
+      },{
+        name: "password",
+        display: "密码",
+        rules: "required"
+      },{
+        name: "confirmPassword",
+        display: "确认密码",
+        rules: "required"
+      },{
+        name: "verifyCode",
+        display: "手机验证码",
+        rules: "required"
+      }];
+      var validator = new FormValidator("reg", fileds, function(errors, event) {
+        if(errors && errors.length > 0) {
+          $.toast(errors[0].message);
+        }
+      });
+      validator.setMessage("required", "请输入%s!");
+      $("#sendCode").click(function() {
+        var mobile = $("input[name='username']").val();
+        if (mobile && /\d{11}/.test(mobile)) {
+          getMobileCode(mobile, VerifyCodeType.ResetPassword, function() {
+
+          });
+        } else {
+          $.toast("请输入正确的手机号.");
+        }
+      })
+    })           

@@ -7,6 +7,7 @@ var Areas = require('../models/areas.js');
 var util = require('./util.js');
 var config = require('../config/config.js');
 var _ = require('underscore');
+var request = require('request');
 
 var areasData = null;
 
@@ -33,7 +34,8 @@ var userService = {
       where: {
         user_id: userId,
         if_del: 0
-      }
+      },
+      order: 'create_time DESC'
     });
   },
 
@@ -110,6 +112,21 @@ var userService = {
       return address.destroy();
     })
   },
+
+  sendCodeToMobile: function (mobile, type, callback) {
+    var url = config.messageHost;
+    switch(type) {
+      case "reg":
+        url += "/index.php?controller=messageauthentication&action=sendCodeToValidate&tel="
+        break;
+      case "resetPassword":
+        url += "/index.php?controller=messageauthentication&action=sendCodeToValidateWhenForgotPassword&tel="
+        break;
+    }
+    url += mobile;
+    console.log(url);
+    request(url, callback);
+  }
 
 };
 

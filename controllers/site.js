@@ -2,6 +2,7 @@ var userService = require('../services/user.js');
 var security = require('../services/security.js');
 var productService = require('../services/product');
 var siteService = require('../services/site');
+var orderService = require('../services/order');
 var Sequelize = require('sequelize');
 var _ = require('lodash');
 
@@ -87,7 +88,7 @@ var siteCtrl = {
   },
 
   createOrder: function(user, req, res, next) {
-    var type = req.param('type');
+    var type = req.query.type;
     if (type == "cart") {
       var shoppingcart = req.cookies.shoppingcart;
       if (!shoppingcart) throw new Error;
@@ -96,7 +97,7 @@ var siteCtrl = {
       var promise = []
       promise.push(siteService.getProductsInShoppingCart(shoppingcart));
       promise.push(userService.getUserDefaultAddress(user.id));
-      promise.push(siteService.getSiteDelivey());
+      promise.push(siteService.getSiteDelivery());
       promise.push(siteService.getSitePayment());
 
       Promise.all(promise).then(function (data) {
@@ -112,9 +113,55 @@ var siteCtrl = {
       
     }
   },
+
+  createOrderAction: function (user, req, res, next) {
+    var address_id = req.param('address_id');
+    var delivery_id = req.param('delivery_id');
+    var products = req.param('products');
+    var obj = {
+      user_id: user.id,
+      delivery_id: delivery_id,
+      payment: req.param('payment'),
+      type: req.param('type'),
+    };
+    var promise = [];
+    promise.push(userService.getAddressById(address_id));
+    promise.push(orderService.countOrderDetail(products, delivery_id));
+
+    Promise.all(promise).then(function (data) {
+      var address = data[0];
+      obj.accept_name = address.accept_name;
+      obj.telphone = address.telphone;
+      obj.province = address.province;
+      obj.city = address.city;
+      obj.area = address.area;
+      obj.address = address.address;
+      obj.mobile = address.mobile;
+      var orderData = data[1];
+      obj.orderData = orderData;
+
+      var orderProducts = orderData.orderProducts;
+      orderService.createOrder(obj).then(function (order) {
+        if (order && orderProducts && orderProducts.length > 0) {
+          for (var i = 0; i < orderProducts.length; i++) {
+            orderProducts[i].order_id = order.id;
+          };
+          orderService.createOrderProducts(orderProducts).then(function () {
+            res.send({
+              success: true,
+              payment_url: "xxx"
+            });
+          });
+        } else {
+          throw new Error({api: true});
+        }
+      });
+    })
+  },
 };
 
-shoppingcartVerify = function (req, res, next) {
+
+var shoppingcartVerify = function (req, res, next) {
   var id = req.body.id;
   var num = req.body.num;
   if (isNaN(id) || isNaN(num)) {

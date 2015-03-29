@@ -38,14 +38,14 @@ block content
                   span= product.sellPrice
 
     div.app-section
-      div
-        div 小计
-        div
-      div
-        div 运费
-        div
-      div
-        div 总计
-        div
+      div.order-price
+        div.left 小计
+        div.right
+      div.order-price
+        div.left 运费
+        div.right
+      div.order-price
+        div.left 总计
+        div.right
       div.create-order
-        a.btn= "提交订单"
+        a.btn#createOrder= "提交订单"

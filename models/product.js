@@ -31,12 +31,38 @@ var attributes = {
   },
   content: {
     type: Sequelize.TEXT
-  }
+  },
+  exp: {
+    type: Sequelize.INTEGER
+  },
+  point: {
+    type: Sequelize.INTEGER
+  },
+  weight: {
+    type: Sequelize.DECIMAL(15,2)
+  },
+  unit: {
+    type: Sequelize.DECIMAL(15,2)
+  },
+  goods_no: {
+    type: Sequelize.STRING
+  },
 };
 
 var Product = sequelize.define('Product', attributes, {
   timestamps: false,
-  tableName: tableName
+  tableName: tableName,
+  getterMethods: {
+    calcWeight: function () {
+      if (this.unit == "kg") {
+        return this.weight * 1000;
+      } else if (this.unit == "g") {
+        return this.weight;
+      } else {
+        return this.weight;
+      }
+    }
+  }
 });
 
 Product.hasMany(ProductPhotoRelation, {foreignKey: 'goods_id'});

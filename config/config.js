@@ -7,7 +7,8 @@ var config = {
   },
   "secret": "kuaizhi_baihuawei",
   "appName": "bhw_modile",
-  "defaultIcon": "/images/user_ico.gif"
+  "defaultIcon": "/images/user_ico.gif",
+  "messageHost": "http://www.baihuawei.com"
 }
 
 module.exports = config;

@@ -3,6 +3,7 @@ var config = require('../config/config.js');
 var productService = require('./product');
 var Delivery = require('../models/delivery');
 var Payment = require('../models/payment');
+var Order = require('../models/order');
 
 var siteService = {
   encodeShoppingcart: function (obj) {
@@ -90,18 +91,31 @@ var siteService = {
   getSitePayment: function  () {
     return Payment.findAll({
       where: {
-        status: 0
+        status: 0,
+        client_type: 2
       }
     }, {raw: true});
   },
 
-  getSiteDelivey: function  () {
+  getSiteDelivery: function  () {
     return Delivery.findAll({
       where: {
         is_delete: 0,
-        status: 1 
+        status: 1,
+        type: 0
       }
     }, {raw: true});
+  },
+
+  getDeliveryById: function (id, isRaw) {
+    isRaw = isRaw || false;
+    return Delivery.find({
+      where: {
+        id: id,
+        is_delete: 0,
+        status: 1 
+      }
+    }, {raw: isRaw});
   }
 };
 

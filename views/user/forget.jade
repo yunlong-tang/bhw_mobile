@@ -13,3 +13,23 @@ block content
         button.app-button.dark-blue 发送验证码
       div.app-section
         button.app-button.green 确定
+
+block scriptBlock
+  script.
+    $(function () {
+      var fileds = [{
+        name: "username",
+        display: "手机号",
+        rules: "required"
+      },{
+        name: "password",
+        display: "密码",
+        rules: "required"
+      }];
+      var validator = new FormValidator("login", fileds, function(errors, event) {
+        if(errors && errors.length > 0) {
+          $.toast(errors[0].message);
+        }
+      });
+      validator.setMessage("required", "请输入%s!");
+    })   

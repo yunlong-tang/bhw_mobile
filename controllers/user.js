@@ -1,6 +1,8 @@
 var userService = require('../services/user.js');
 var routerConstant = require('../config/router.js');
 var security = require('../services/security.js');
+var config = require('../config/config');
+var http = require('http');
 // var util = require('../services/util.js');
 
 var userCtrl = {
@@ -136,6 +138,20 @@ var userCtrl = {
         next();
       }
     })
+  },
+
+  getMobileCode: function (req, res, next) {
+    var type = req.params.type;
+    var mobile = req.query.mobile;
+    userService.sendCodeToMobile(mobile, type, function(err, response, body) {
+      if (!err) {
+        res.send({
+          success: true,
+          message: JSON.parse(body)
+        })
+      }
+    });
+
   }
 };
 

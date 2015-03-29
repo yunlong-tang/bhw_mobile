@@ -25,5 +25,6 @@ router.post('/address/add', userCtrl.tokenVerify, userCtrl.addressCreateAction);
 router.get('/address/:id', userCtrl.tokenVerify, userCtrl.addressEdit);
 router.post('/address/:id', userCtrl.tokenVerify, userCtrl.addressEditAction);
 
+router.get('/mobilecode/:type', userCtrl.getMobileCode);
 
 module.exports = router;
