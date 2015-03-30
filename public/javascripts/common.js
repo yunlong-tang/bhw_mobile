@@ -76,10 +76,6 @@ function getAreasData(callback) {
   });
 }
 
-function getMobileCode(mobile) {
-
-}
-
 function joinCart(id, num, success, error) {
   success = success || $.noop;
   error = error || success;

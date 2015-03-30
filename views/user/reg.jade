@@ -40,14 +40,32 @@ block scriptBlock
         }
       });
       validator.setMessage("required", "请输入%s!");
-      $("#sendCode").click(function() {
+
+      var id = null;
+      $("#sendCode").click(function() {  
+        var self = $(this);
         var mobile = $("input[name='username']").val();
         if (mobile && /\d{11}/.test(mobile)) {
-          getMobileCode(mobile, VerifyCodeType.ResetPassword, function() {
-
+          if (id != null) {
+            return;
+          }
+          var count = 60;
+          id = setInterval(function(){
+            count--;
+            self.text("发送验证码" + "("+count+")");
+            if (count <= 0) {
+              self.text("发送验证码");
+              clearInterval(id);
+              id = null;
+            }
+          }, 1000);
+          getMobileCode(mobile, VerifyCodeType.Reg, function(data) {
+            if (data.success) {
+              $.toast("发送成功. 请查看你的手机~");
+            }
           });
         } else {
-          $.toast("请输入正确的手机号.");
+          $.toast("请输入正确的手机号!");
         }
       })
     })           

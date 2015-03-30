@@ -124,10 +124,8 @@ var userService = {
         break;
     }
     url += mobile;
-    console.log(url);
     request(url, callback);
   }
-
 };
 
 userService.getAreas(function () {
