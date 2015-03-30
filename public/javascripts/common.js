@@ -125,6 +125,20 @@ function removeCart (id, success, error) {
   })
 }
 
+function createOrder (data) {
+  success = success || $.noop;
+  error = error || success;
+  $.ajax({
+    url: '/site/order/create',
+    type: 'POST',
+    dataType: 'json',
+    contentType: 'application/json',
+    data: JSON.stringify(data),
+    success: success,
+    error: error
+  })
+}
+
 function getMobileCode (mobile, type, callback) {
   var url;
   switch(type) {
