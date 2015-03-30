@@ -41,9 +41,19 @@ block scriptBlock
       })
       $(".totals span").text(total.toFixed(2));
       $(".qty-editor .minus").click(function() {
-          
+        
       });
       $(".qty-editor .plus").click(function() {
         
       });
+      $(".qty .delete").click(function() {
+        var id = $(this).data("id");
+        $.dialog({
+          text: constants.cartDeleteTip,
+          success: constants.confirm,
+          failed: constants.cancel
+        }, function () {
+          removeCart(id, $.toast("删除成功"), $.toast("删除失败"));
+        });
+      })
     })

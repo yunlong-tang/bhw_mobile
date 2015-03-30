@@ -89,6 +89,11 @@ var orderService = {
     return OrderProduct.bulkCreate(orderProducts);
   },
 
+  getOrderById: function (id) {
+    return Order.find({where: {
+      id: id
+    }});
+  },
 
   createOrder: function(obj) {
     var order = {

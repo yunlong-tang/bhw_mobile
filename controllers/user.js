@@ -132,7 +132,7 @@ var userCtrl = {
 
   specialTokenVerify: function(req, res, next) {
     security.hasLoginedUser(req, function(result) {
-      if (result === true) {
+      if (result) {
         res.redirect(routerConstant.userIndex);
       } else {
         next();

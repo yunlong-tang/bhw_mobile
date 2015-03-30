@@ -5,6 +5,7 @@ var siteService = require('../services/site');
 var orderService = require('../services/order');
 var Sequelize = require('sequelize');
 var _ = require('lodash');
+var alipay = require('../services/alipay');
 
 var siteCtrl = {
   transformShoppingcart: function (req, res, next) {
@@ -72,12 +73,9 @@ var siteCtrl = {
     });
   },
   removeCart: function(shoppingcart, req, res, next) {
-    shoppingcartVerify(req, res, next);
-    var id = req.body.id;
-    var num = req.body.num || 1;
+    var id = req.params.id;
     var product = { 
-      id: id,
-      num: num
+      id: id
     };
     shoppingcart = siteService.removeFromShoppingCart(product, shoppingcart);
     shoppingcart = siteService.encodeShoppingcart(shoppingcart);
@@ -149,15 +147,34 @@ var siteCtrl = {
           orderService.createOrderProducts(orderProducts).then(function () {
             res.send({
               success: true,
-              payment_url: "xxx"
+              payment_url: "/site/order/" + order.id + "/purchase"
             });
           });
         } else {
-          throw new Error({api: true});
+          next({message: "创建订单失败!"});
         }
       });
     })
   },
+  doPay: function (user, req, res, next) {
+    var orderId = req.params.orderId;
+    var callback = req.query.callback;
+    var data = {
+      out_trade_no: orderId,
+      subject: "百花味购物",
+      total_fee: 0,
+      merchant_url: callback
+    };
+    orderService.getOrderById(orderId).then(function (order) {
+      if (order) {
+        data.total_fee = order.real_amount;
+        alipay.createDirectPayByWap(data, res);
+      } else {
+        next({message: "找不到订单!"});
+      }
+    })
+
+  }
 };
 
 

@@ -94,6 +94,37 @@ function joinCart(id, num, success, error) {
   })
 }
 
+function editCart (id, num, success, error) {
+  success = success || $.noop;
+  error = error || success;
+  var data = {
+    id: id,
+    num: num,
+  }
+  $.ajax({
+    url: '/site/cart/edit',
+    type: 'POST',
+    dataType: 'json',
+    contentType: 'application/json',
+    data: JSON.stringify(data),
+    success: success,
+    error: error
+  })
+}
+
+function removeCart (id, success, error) {
+  success = success || $.noop;
+  error = error || success;
+  $.ajax({
+    url: '/site/cart/' + id,
+    type: 'DELETE',
+    dataType: 'json',
+    contentType: 'application/json',
+    success: success,
+    error: error
+  })
+}
+
 function getMobileCode (mobile, type, callback) {
   var url;
   switch(type) {
@@ -116,7 +147,8 @@ var constants = {
   confirm: "我确定",
   cancel: "点错了",
   logoutTitle: "退出提示!",
-  logoutText: "您确定退出登录么?"
+  logoutText: "您确定退出登录么?",
+  cartDeleteTip: "确定删除该商品么?",
 }
 var VerifyCodeType = {
   "Reg": 0,

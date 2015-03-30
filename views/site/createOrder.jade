@@ -49,3 +49,15 @@ block content
         div.right
       div.create-order
         a.btn#createOrder= "提交订单"
+
+block scriptBlock
+  script.
+    $(function() {
+      $("#createOrder").click(function() {
+        createOrder(data);
+      })
+    })
+
+  function createOrder(data, success, error) {
+    $.ajax();
+  }
