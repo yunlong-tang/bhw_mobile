@@ -94,7 +94,7 @@ function joinCart(id, num, success, error) {
   })
 }
 
-function editCart (id, num, success, error) {
+function editCart(id, num, success, error) {
   success = success || $.noop;
   error = error || success;
   var data = {
@@ -112,7 +112,7 @@ function editCart (id, num, success, error) {
   })
 }
 
-function removeCart (id, success, error) {
+function removeCart(id, success, error) {
   success = success || $.noop;
   error = error || success;
   $.ajax({
@@ -125,11 +125,12 @@ function removeCart (id, success, error) {
   })
 }
 
-function createOrder (data) {
+function createOrder(data, type) {
   success = success || $.noop;
   error = error || success;
+  var url = "/site/order/create";
   $.ajax({
-    url: '/site/order/create',
+    url: url,
     type: 'POST',
     dataType: 'json',
     contentType: 'application/json',
@@ -139,9 +140,9 @@ function createOrder (data) {
   })
 }
 
-function getMobileCode (mobile, type, callback) {
+function getMobileCode(mobile, type, callback) {
   var url;
-  switch(type) {
+  switch (type) {
     case VerifyCodeType.Reg:
       url = '/user/mobilecode/reg';
       break;
@@ -153,10 +154,20 @@ function getMobileCode (mobile, type, callback) {
   $.get(url, callback);
 }
 
+function caculateTotal() {
+  var total = 0;
+  $(".item").each(function() {
+    var price = $(this).data('price');
+    var num = $(this).data('num');
+    total += price * num;
+  })
+  return total.toFixed(2);
+};
+
 var constants = {
   addCartSuccessTitle: "添加成功!",
   addCartSuccessText: "产品已成功添加到购物车 :)",
-  addCartSuccessBtn1: "继续购物", 
+  addCartSuccessBtn1: "继续购物",
   addCartSuccessBtn2: "去结算",
   confirm: "我确定",
   cancel: "点错了",

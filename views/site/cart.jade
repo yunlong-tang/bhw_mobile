@@ -7,7 +7,7 @@ block content
         div.cart-list
           - for (var i = 0; i < products.length; i ++)
             - var product = products[i];
-              div.item
+              div.item(id=product.id data-num=product.num data-price=product.sellPrice)
                 div.left
                   a(href="/product/#{product.id}")
                     img(src=imgPrefix+product.img)
@@ -21,7 +21,7 @@ block content
                 div.qty
                   div.p-price
                     i.ion-social-yen
-                    span= (product.num*product.sellPrice).toFixed(2)
+                    span= product.sellPrice.toFixed(2)
                   div.delete.ion-ios-trash-outline(data-id=product.id)
         div.totals= "商品总额: "
           i.ion-social-yen
@@ -35,18 +35,30 @@ block content
 block scriptBlock
   script.
     $(function() {
-      var total = 0;
-      $(".p-price").find("span").each(function() {
-        total += Number($(this).text());
-      })
-      $(".totals span").text(total.toFixed(2));
-      var id = null;
+      var $totals = $(".totals span");
+      var editIds = {};
       $(".qty-editor .minus").click(function() {
-        
+        var id = $(this).data("id");
+        $num = $(this).next();
+        var num = parseInt($num.text());
+        if (num == 1) return;
+        $num.text(--num);
+        $("#"+id).data("num", num);
+
+        editHandler(id, num);
       });
+
       $(".qty-editor .plus").click(function() {
-        
+        var id = $(this).data("id");
+        $num = $(this).prev();
+        var num = parseInt($num.text());
+        if (num == 99) return;
+        $num.text(++num);
+        $("#"+id).data("num", num);
+
+        editHandler(id, num);      
       });
+
       $(".qty .delete").click(function() {
         var id = $(this).data("id");
         $.dialog({
@@ -54,7 +66,30 @@ block scriptBlock
           success: constants.confirm,
           failed: constants.cancel
         }, function () {
-          removeCart(id, $.toast("删除成功"), $.toast("删除失败"));
+          removeCart(id, function(){
+            //- $.toast("删除成功", 2000);
+            $("#"+id).remove();
+            $totals.text(caculateTotal());
+          }, function() {
+            $.toast("删除失败");
+          });
         });
       })
-    })
+      
+      $totals.text(caculateTotal());
+
+      function editHandler(id, num) {
+        if (editIds[id]) {
+          clearTimeout(editIds[id]);
+        }
+        editIds[id] = setTimeout(function(){
+          editCart(id, num, function(){
+            $totals.text(caculateTotal());
+          }, $.noop);
+        }, 1000);
+      }
+
+    });
+
+
+

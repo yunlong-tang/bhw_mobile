@@ -3,10 +3,10 @@ extends ../layout/layout.jade
 block content
   div.container
     div.app-section
-      div 收货信息
-      div
-        p #{address.accept_name} #{address.mobile}
-        p #{address.detail}
+      div.address(data-id=address.id) 收货信息
+        div.address-content
+          p #{address.accept_name} #{address.mobile}
+          p #{address.detail}
 
     div.app-section
       table
@@ -14,20 +14,23 @@ block content
           tr
             td 配送方式：
             td
-              select
+              select#delivery
+                - for(var i = 0; i < delivery.length; i++)
+                  option(value=delivery[i].id)= delivery[i].name
               
           tr
             td 支付方式：
             td
-              select
-                option 支付宝
+              select#payment
+                - for(var i = 0; i < payment.length; i++)
+                  option(value=payment[i].id)= payment[i].name
 
     div.app-section
       table.order-item-list
         tbody
           - for (var i = 0; i < products.length; i ++)
             - var product = products[i];
-            tr
+            tr.item(data-num=product.num data-price=product.sellPrice)
               td.img
                 img(src=imgPrefix+product.img width="30px" height="30px")
               td.name= product.name
@@ -41,10 +44,10 @@ block content
       div.order-price
         div.left 小计
         div.right
-      div.order-price
+      div.delivery-price
         div.left 运费
         div.right
-      div.order-price
+      div.total-price
         div.left 总计
         div.right
       div.create-order

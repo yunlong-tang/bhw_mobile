@@ -27,22 +27,32 @@ var userCtrl = {
   },
 
   login: function(req, res, next) {
+    var callback = req.query.callback;
+    if (callback) {
+      callback = encodeURIComponent(callback);
+    }
     res.render("user/login", {
       hideBackButton: true,
       title: "登录",
       rightContent: "注册",
-      rightHref: routerConstant.userReg
+      rightHref: routerConstant.userReg,
+      callback: callback
     })
   },
   loginAction: function(req, res, next) {
     var username = req.body.username;
     var password = req.body.password;
+    var callback = req.query.callback;
     userService.loginUser(username, password).then(function(user) {
       if (user) {
         var token = security.serializeAuthTicket(username, password);
         res.cookie("token", token, {
           expires: new Date(Date.now() + 24 * 60 * 60 * 1000)
         });
+        if (callback) {
+          res.redirect(callback);
+          return;
+        }
         res.redirect(routerConstant.userIndex);
       } else {
         res.redirect(routerConstant.userLogin);
@@ -120,12 +130,15 @@ var userCtrl = {
   },
 
   tokenVerify: function(req, res, next) {
+    var callback = req.query.callback;
     security.hasLoginedUser(req, function(result) {
       if (result) {
         next(result);
       } else {
         res.clearCookie("token");
-        res.redirect(routerConstant.userLogin);
+        var callback = encodeURIComponent(req.originalUrl);
+        res.redirect(routerConstant.userLogin + "?callback=" + callback);
+        
       }
     })
   },

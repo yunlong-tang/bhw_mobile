@@ -40,21 +40,23 @@
     $container.fadeOut();
   };
   $.dialog = function (obj, success, failed) {
-    success = success || function (){};
-    failed = failed || function (){};
+    success = success || $.noop;
+    failed = failed || $.noop;
     if (!hasInit) {
       init();
     }
-    $toast.hide();
     obj = $.extend(defaultObj, obj);
+    $toast.hide();
+    $dialog.show();
     $container.fadeIn();
     $title.text(obj.title || "");
     $text.text(obj.text || "");
-    $success.text(obj.success || "").click(success).click(noop);
-    $failed.text(obj.failed || "").click(failed).click(noop);
+    $success.text(obj.success || "").click(noop).click(success);
+    $failed.text(obj.failed || "").click(noop).click(failed);
   };
 
-  $.toast = function (msg) {
+  $.toast = function (msg, during) {
+    during = during || 1000;
     msg = msg || "系统错误，请稍后再试~";
     if (!hasInit) {
       init();
@@ -65,7 +67,7 @@
     $message.text(msg);
     setTimeout(function () {
       $container.fadeOut();
-    }, 1000);
+    }, during);
   };
 
   $.noop = function () {};

@@ -2,7 +2,10 @@ extends ../layout/layout.jade
 
 block content
   div.container
-    form(id="login", name="login" method="post", action="/user/login")
+    - var action = "/user/login"
+    - if (callback)
+      - action += "?callback=" + callback
+    form(id="login", name="login" method="post", action=action)
       div.app-section
         input.app-input(name="username", placeholder="手机号")
         input.app-input(name="password", placeholder="密码" type="password")
