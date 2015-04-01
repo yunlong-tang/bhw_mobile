@@ -14,7 +14,7 @@ block content
     form(id="", method="post", action=action)
       div.app-section
         input.app-input(placeholder="姓名" value=accept_name name="accept_name") 
-        input.app-input(placeholder="手机号" value=mobile name="mobile") 
+        input.app-input(placeholder="手机号" value=mobile name="mobile")
       div.app-section
         select.app-select#province(name="province")
         select.app-select#city(name="city")
@@ -24,10 +24,20 @@ block content
       div.app-section
         input.app-input.yellow(type="submit" value=submit)
         - if (address)
-          a.app-button.red 删除
+          input(type="hidden" name="id" value=address.id)
+          a#address-delete.app-button.red(data-id=address.id) 删除
 
 block scriptBlock
   script.
     $(function($){
       initAddressSelection([#{select}]);
+
+      $("#address-delete").click(function() {
+        var id = $(this).data('id');
+        removeAddress(id, function() {
+          location.href = '/user/address';
+        }, function(data) {
+          $.toast(data.message);
+        });
+      });
     });

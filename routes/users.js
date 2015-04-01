@@ -23,7 +23,8 @@ router.get('/address', userCtrl.tokenVerify, userCtrl.addressList);
 router.get('/address/add', userCtrl.tokenVerify, userCtrl.addressCreate);
 router.post('/address/add', userCtrl.tokenVerify, userCtrl.addressCreateAction);
 router.get('/address/:id', userCtrl.tokenVerify, userCtrl.addressEdit);
-router.post('/address/:id', userCtrl.tokenVerify, userCtrl.addressEditAction);
+router.post('/address/:id/edit', userCtrl.tokenVerify, userCtrl.addressEditAction);
+router.delete('/address/:id', userCtrl.tokenVerify, userCtrl.addressRemoveAction);
 
 router.get('/mobilecode/:type', userCtrl.getMobileCode);
 

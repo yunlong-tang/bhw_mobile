@@ -94,10 +94,16 @@ var userService = {
     });
   },
 
-  getAddressById: function (id) {
-    return Address.find({where: {
-      id: id
-    }});
+  getAddressById: function (id, userId) {
+    var options = {
+      where: {
+        id: id
+      }
+    };
+    if (userId) {
+      options.where.user_id = userId;
+    }
+    return Address.find(options);
   },
 
   createAddress: function (address) {
@@ -108,8 +114,8 @@ var userService = {
     return Address.upsert(address);
   },
 
-  removeAddress: function (id) {
-    this.getAddressById(id).then(function (address) {
+  removeAddress: function (id, userId) {
+    this.getAddressById(id, userId).then(function (address) {
       return address.destroy();
     })
   },

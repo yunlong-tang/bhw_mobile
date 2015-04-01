@@ -164,6 +164,19 @@ function caculateTotal() {
   return total.toFixed(2);
 };
 
+function removeAddress (id, success, error) {
+  success = success || $.noop;
+  error = error || success;
+  $.ajax({
+    url: '/user/address/' + id,
+    type: 'DELETE',
+    dataType: 'json',
+    contentType: 'application/json',
+    success: success,
+    error: error
+  })
+}
+
 var constants = {
   addCartSuccessTitle: "添加成功!",
   addCartSuccessText: "产品已成功添加到购物车 :)",

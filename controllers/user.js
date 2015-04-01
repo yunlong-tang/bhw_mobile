@@ -195,8 +195,35 @@ var userCtrl = {
       });
     })
   },
-  addressEditAction: function () {
-    
+  addressEditAction: function (user, req, res, next) {
+    var address = {
+      user_id: user.id,
+      accept_name: req.body.accept_name,
+      mobile: req.body.mobile,
+      province: req.body.province,
+      city: req.body.city,
+      area: req.body.area,
+      address: req.body.address,
+      id: req.body.id
+    };
+    userService.updateAddress(address).then(function (address) {
+      res.redirect(routerConstant.addressList);
+    });    
+  },
+
+  addressRemoveAction: function (user, req, res, next) {
+    var id = req.params.id;
+    userService.removeAddress(id, user.id).then(function (result) {
+      if (result == undefined) {
+        res.send({success: true});
+      } else {
+        next({
+          api: true,
+          status: 400,
+          meesage: "删除地址失败."
+        })
+      }
+    });
   },
 
   tokenVerify: function(req, res, next) {

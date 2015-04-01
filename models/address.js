@@ -7,6 +7,7 @@ var prefix    = require('../config/config').db.prefix;
 var tableName = prefix + 'address';
 
 var attributes = {
+  id         : {type: Sequelize.INTEGER, primaryKey: true},
   user_id    : {type: Sequelize.INTEGER},
   accept_name: {type: Sequelize.STRING},
   zip        : {type: Sequelize.STRING},
