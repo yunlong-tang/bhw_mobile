@@ -78,6 +78,16 @@ var userCtrl = {
   orderList: function(user, req, res, next) {
     userService.getUserOrderList(user.id).then(function (orders) {
       orders = orders || [];
+      for (var i = 0; i < orders.length; i++) {
+        var action = orders[i].action;
+        if (action == 1) {
+          orders[i].actionText = "支付";
+          orders[i].actionUrl = '/site/order/' + orders[i].id + '/purchase';
+        } else if (action ==2){
+          orders[i].actionText = "确认收货";
+          
+        }
+      };
       res.render("user/orderList", {
         title: "我的订单",
         orders: orders

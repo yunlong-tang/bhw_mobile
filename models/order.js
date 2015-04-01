@@ -63,6 +63,21 @@ var Order = sequelize.define('Order', attributes, {
     createAt: function () {
       var date = new Date(this.create_time).format("yyyy-mm-dd HH:MM:ss", true);
       return date;
+    },
+    action: function () {
+      var code = getOrderStatus(this);
+      switch(code) {
+        case 1:
+        case 3:
+        case 4:
+        case 8:
+          return 2; //"确认收货"
+        case 2:
+          return 1; //"支付"
+          break;
+        default:
+          return 0; //"其他"
+      }
     }
   }
 });

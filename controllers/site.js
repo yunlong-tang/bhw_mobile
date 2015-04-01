@@ -113,14 +113,14 @@ var siteCtrl = {
   },
 
   createOrderAction: function (user, req, res, next) {
-    var address_id = req.param('address_id');
-    var delivery_id = req.param('delivery_id');
-    var products = req.param('products');
+    var address_id = req.body.address_id;
+    var delivery_id = req.body.delivery_id;
+    var products = req.body.products;
     var obj = {
       user_id: user.id,
       delivery_id: delivery_id,
-      payment: req.param('payment'),
-      type: req.param('type'),
+      payment: req.body.payment,
+      type: req.body.type,
     };
     var promise = [];
     promise.push(userService.getAddressById(address_id));
@@ -145,6 +145,7 @@ var siteCtrl = {
             orderProducts[i].order_id = order.id;
           };
           orderService.createOrderProducts(orderProducts).then(function () {
+            res.clearCookie("shoppingcart");
             res.send({
               success: true,
               payment_url: "/site/order/" + order.id + "/purchase"
@@ -156,6 +157,7 @@ var siteCtrl = {
       });
     })
   },
+  
   doPay: function (user, req, res, next) {
     var orderId = req.params.orderId;
     var callback = req.query.callback;
@@ -163,7 +165,7 @@ var siteCtrl = {
       out_trade_no: orderId,
       subject: "百花味购物",
       total_fee: 0,
-      merchant_url: callback
+      merchant_url: callback || "http://localhost:3000/user"
     };
     orderService.getOrderById(orderId).then(function (order) {
       if (order) {
@@ -173,7 +175,6 @@ var siteCtrl = {
         next({message: "找不到订单!"});
       }
     })
-
   }
 };
 

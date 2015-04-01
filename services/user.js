@@ -85,6 +85,7 @@ var userService = {
       }
     }).then(function (result) {
       var address = {
+        id: result.id,
         accept_name: result.accept_name,
         mobile: result.mobile,
         detail: getAddressDetail(result)

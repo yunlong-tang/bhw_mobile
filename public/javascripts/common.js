@@ -125,7 +125,7 @@ function removeCart(id, success, error) {
   })
 }
 
-function createOrder(data, type) {
+function createOrder(data, success, error) {
   success = success || $.noop;
   error = error || success;
   var url = "/site/order/create";

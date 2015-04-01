@@ -3,7 +3,7 @@ extends ../layout/layout.jade
 block content
   div.container
     div.app-section
-      div.address(data-id=address.id) 收货信息
+      div#address.address(data-id=address.id) 收货信息
         div.address-content
           p #{address.accept_name} #{address.mobile}
           p #{address.detail}
@@ -30,7 +30,7 @@ block content
         tbody
           - for (var i = 0; i < products.length; i ++)
             - var product = products[i];
-            tr.item(data-num=product.num data-price=product.sellPrice)
+            tr.item(data-num=product.num data-price=product.sellPrice data-id=product.id)
               td.img
                 img(src=imgPrefix+product.img width="30px" height="30px")
               td.name= product.name
@@ -57,6 +57,37 @@ block scriptBlock
   script.
     $(function() {
       $("#createOrder").click(function() {
-        createOrder(data);
+        var products = [];
+        $(".item").each(function() {
+          var item = {
+            id: $(this).data("id"),
+            num: $(this).data("num")
+          }
+          products.push(item);
+        });
+        var data = {
+          address_id: $("#address").data("id"),
+          delivery_id: $("#delivery").val(),
+          type: 0,
+          payment: $("#payment").val(),
+          products: products
+        };
+        
+        createOrder(data, function(data) {
+          if (data.success) {
+            $.dialog({
+              title: "提交成功!",
+              text: "您的订单已经成功提交 :)",
+              success: "现在支付",
+              failed: "稍后支付"
+            }, function() {
+              location.href = data.payment_url+ "?callback=http://localhost:3000/user";
+            }, function() {
+              location.href = '/user/order';
+            });
+          }
+        }, function() {
+
+        });
       })
     })
