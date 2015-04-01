@@ -3,7 +3,7 @@ var routerConstant = require('../config/router.js');
 var security = require('../services/security.js');
 var config = require('../config/config');
 var http = require('http');
-// var util = require('../services/util.js');
+var request = require('request');
 
 var userCtrl = {
   index: function(user, req, res, next) {
@@ -14,16 +14,50 @@ var userCtrl = {
     })
   },
   reg: function(req, res, next) {
+    var message = req.query.error || null;
     res.render("user/reg", {
       title: "注册",
       rightContent: "登录",
       rightHref: routerConstant.userLogin,
-      hideBackButton: true
+      hideBackButton: true,
+      message: message
     })
   },
 
   regAction: function(req, res, next) {
-
+    var username = req.body.username;
+    var password = req.body.password;
+    var data =   {
+      mobile    : req.body.username,
+      mobilecode: req.body.verifyCode,
+      password  : req.body.password,
+      repassword: req.body.confirmPassword
+    };
+    var url = config.APIHost + config.regAPI;
+    request.post({
+      url: url,
+      formData: data,
+      postambleCRLF: true
+    }, function(err, httpRes, body) {
+      var result = body.match(/\{.*?\}/g);
+      result = result.pop();
+      result = JSON.parse(result);
+      if (result.result == 0) {
+        userService.loginUser(username, password).then(function(user) {
+          if (user) {
+            var token = security.serializeAuthTicket(username, password);
+            res.cookie("token", token, {
+              expires: new Date(Date.now() + 24 * 60 * 60 * 1000)
+            });
+            res.redirect(routerConstant.userIndex);
+          } else {
+            res.redirect(routerConstant.userLogin);
+          }
+        });        
+      } else {
+        res.redirect(routerConstant.userReg + "?error=" + result.message);
+      } 
+    });
   },
 
   login: function(req, res, next) {
@@ -31,12 +65,14 @@ var userCtrl = {
     if (callback) {
       callback = encodeURIComponent(callback);
     }
+    var message = req.query.message;
     res.render("user/login", {
       hideBackButton: true,
       title: "登录",
       rightContent: "注册",
       rightHref: routerConstant.userReg,
-      callback: callback
+      callback: callback,
+      message: message
     })
   },
   loginAction: function(req, res, next) {
@@ -65,15 +101,39 @@ var userCtrl = {
   },
 
   forget: function(req, res, next) {
+    var message = req.query.error || null;
     res.render("user/forget", {
       title: "忘记密码",
       rightContent: "登录",
       rightHref: routerConstant.userLogin,
-      hideBackButton: true
+      hideBackButton: true,
+      message: message
     })
   },
   forgetAction: function(req, res, next) {
-
+    var username = req.body.username;
+    var password = req.body.password;
+    var data =   {
+      mobile    : req.body.username,
+      mobilecode: req.body.verifyCode,
+      password  : req.body.password,
+      repassword: req.body.confirmPassword
+    };
+    var url = config.APIHost + config.forgetAPI;
+    request.post({
+      url: url,
+      formData: data,
+      postambleCRLF: true
+    }, function(err, httpRes, body) {
+      var result = body.match(/\{.*?\}/g);
+      result = result.pop();
+      result = JSON.parse(result);
+      if (result.result == 0) {
+        res.redirect(routerConstant.userLogin + "?message=修改成功,请重新登录");      
+      } else {
+        res.redirect(routerConstant.userForget + "?error=" + result.message);
+      } 
+    });
   },
   orderList: function(user, req, res, next) {
     userService.getUserOrderList(user.id).then(function (orders) {

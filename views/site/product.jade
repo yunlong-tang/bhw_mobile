@@ -2,43 +2,58 @@ extends ../layout/layout.jade
 
 block content
   div.container
-    div.product-detail-page
+    div.product-detail-page(data-id=product.id)
       ul.product-slider#product-slider
         - for (var i = 0; i < product.ProductPhotoRelations.length; i++)
           - var item = product.ProductPhotoRelations[i];
           li 
             img(src=imgPrefix+item.ProductPhoto.img)
       div.product-info
-        div= product.name
-        div= product.marketPrice
-        div
+        div.product-name= product.name
+        div.market-price
+          i.ion-social-yen 
+          span= product.marketPrice.toFixed(2)
+        div.sell-price
           i.ion-social-yen
-          span= product.sellPrice
-        input#productId(type="hidden" value=product.id)
-
+          span= product.sellPrice.toFixed(2)
       div.product-detail
-        div= "商品详情"
+        div.title= "商品详情"
         div.product-description !{product.content}
 
     div.product-footer
       div.purchase= "立即购买"
-      div.add-cart= "加入购物车"
+      //- div.add-cart= "加入购物车"
 
 block scriptBlock
-  script(src='/javascripts/lib/pgwslider/pgwslider.min.js')
-  link(rel='stylesheet', href='/javascripts/lib/pgwslider/pgwslider.css')
+  script(src='/javascripts/lib/pgwslideshow/pgwslideshow.js')
+  link(rel='stylesheet', href='/javascripts/lib/pgwslideshow/pgwslideshow_light.css')
   script.
     $(function() {
-      $('#product-slider').pgwSlider({
+      $('#product-slider').pgwSlideshow({
+        mainClassName: 'pgwSlideshowLight',
         displayList: false,
         transitionEffect: 'fading',
-
+        maxHeight: 250,
+        displayControls: true,
+        adaptiveHeight: true,
+        touchControls: true
+        //- autoSlide: true
       });
 
-      $('.add-cart').click(function() {
-        var id = $("#productId").val();
-        joinCart(id, 1, function () {
-
+      $('.purchase').click(function() {
+        var id = $(".product-detail-page").data('id');
+        joinCart(id, 1, function() {
+          var obj = {
+            title: constants.addCartSuccessTitle,
+            text: constants.addCartSuccessText,
+            success: constants.addCartSuccessBtn1,
+            failed: constants.addCartSuccessBtn2
+          }
+          $.dialog(obj,$.noop, function(){
+            location.href = "/site/cart";
+          });
+        }, function () {
+          $.toast();
         });
       })
     });

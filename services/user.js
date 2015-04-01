@@ -115,7 +115,7 @@ var userService = {
   },
 
   sendCodeToMobile: function (mobile, type, callback) {
-    var url = config.messageHost;
+    var url = config.APIHost;
     switch(type) {
       case "reg":
         url += "/index.php?controller=messageauthentication&action=sendCodeToValidate&tel="

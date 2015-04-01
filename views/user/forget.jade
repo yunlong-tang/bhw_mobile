@@ -2,7 +2,7 @@ extends ../layout/layout.jade
 
 block content
   div.container
-    form(name="reg", method="post", action="/user/reg")
+    form(name="reg", method="post", action="/user/forget")
       div.app-section
         input.app-input(name="username" placeholder="手机号")
       div.app-section
@@ -19,6 +19,10 @@ block content
 block scriptBlock
   script.
     $(function () {
+      if ("#{message}") {
+        $.toast("#{message}");
+      }
+
       var fileds = [{
         name: "username",
         display: "手机号",

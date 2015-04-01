@@ -1,9 +1,9 @@
-var Product = require('../models/product.js');
+var productService = require('../services/product.js');
 var userService = require('../services/user.js');
 
 var homeCtrl = {
   index: function (req, res, next) {
-    Product.findAll().then(function (result) {
+    productService.getProducts().then(function (result) {
       res.render('site/index', {
         hideBackButton: true,
         title: "闪购",

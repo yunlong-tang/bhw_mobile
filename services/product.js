@@ -17,6 +17,19 @@ var productService = {
     });
   },
 
+  getProducts: function (size, offset) {
+    size = size || 999;
+    offset = offset || 0;
+    return Product.findAll({
+      where: {
+        is_del: 0
+      },
+      order: "sort DESC",
+      limit: size,
+      offset: offset
+    });
+  },
+
   getProductsWithIds: function (ids, isRaw) {
     isRaw = isRaw || false;
     return Product.findAll({
