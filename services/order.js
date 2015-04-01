@@ -5,6 +5,7 @@ var siteService = require('./site');
 var _ = require('lodash');
 var Order = require('../models/order.js');
 var OrderProduct = require('../models/orderProduct');
+var Promise = require('promise');
 
 var orderService = {
   generateOrderNo: function() {

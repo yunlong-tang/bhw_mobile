@@ -18,6 +18,7 @@
     "morgan": "~1.5.1",
     "mysql": "^2.5.5",
     "node-alipay-wap": "0.0.5",
+    "promise": "^6.1.0",
     "request": "^2.54.0",
     "sequelize": "^2.0.4",
     "serve-favicon": "~2.2.0",

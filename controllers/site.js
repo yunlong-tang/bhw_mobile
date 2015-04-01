@@ -6,6 +6,7 @@ var orderService = require('../services/order');
 var Sequelize = require('sequelize');
 var _ = require('lodash');
 var alipay = require('../services/alipay');
+var Promise = require('promise');
 
 var siteCtrl = {
   transformShoppingcart: function (req, res, next) {
