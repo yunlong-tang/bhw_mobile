@@ -15,13 +15,13 @@
     var defaults = {
         messages: {
             required: 'The %s field is required.',
-            matches: 'The %s field does not match the %s field.',
+            matches: '%s必须和%s一样.',
             "default": 'The %s field is still set to default, please change.',
             valid_email: 'The %s field must contain a valid email address.',
             valid_emails: 'The %s field must contain all valid email addresses.',
-            min_length: 'The %s field must be at least %s characters in length.',
+            min_length: '%s至少输入%s位.',
             max_length: 'The %s field must not exceed %s characters in length.',
-            exact_length: 'The %s field must be exactly %s characters in length.',
+            exact_length: '请输入正确的%s.',
             greater_than: 'The %s field must contain a number greater than %s.',
             less_than: 'The %s field must contain a number less than %s.',
             alpha: 'The %s field must only contain alphabetical characters.',

@@ -58,7 +58,6 @@ var orderService = {
           product_id: 0,
           is_send: 0,
           is_checkout: 0
-
         }
         orderProducts.push(orderProductItem);
       };
@@ -66,7 +65,6 @@ var orderService = {
       orderData.point = point;
       orderData.weight = weight;
       orderData.sum = sum;
-      orderData.final_sum = final_sum;
       orderData.orderProducts = orderProducts;
 
       var delivery = data[1];
@@ -82,6 +80,7 @@ var orderService = {
         delivery_fee += secondPrice * number;
       }
       orderData.deliveryPrice = delivery_fee;
+      orderData.final_sum = final_sum + delivery_fee;
       return orderData;
     });
   },
@@ -120,7 +119,7 @@ var orderService = {
       'exp'            : obj.orderData.exp,
       'point'          : obj.orderData.point,
       'payable_amount' : obj.orderData.sum,
-      'real_amount'    : obj.orderData.final_sum,
+      'real_amount'    : obj.orderData.sum,
       
       //运费价格
       'payable_freight': obj.orderData.deliveryPrice,

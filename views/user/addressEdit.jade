@@ -3,6 +3,8 @@ extends ../layout/layout.jade
 block content
   div.container
     - var action = "add"
+    - if (type)
+      - action += '?type=' + type;
     - var submit = "新增"
     - if (address)
       - var select = [address.province, address.city, address.area];
@@ -11,10 +13,10 @@ block content
       - var detail = address.address
       - action = address.id + "/edit"
       - submit = "提交"
-    form(id="", method="post", action=action)
+    form(name="address", method="post", action=action)
       div.app-section
         input.app-input(placeholder="姓名" value=accept_name name="accept_name") 
-        input.app-input(placeholder="手机号" value=mobile name="mobile")
+        input.app-input(placeholder="手机号" type="tel" value=mobile name="mobile")
       div.app-section
         select.app-select#province(name="province")
         select.app-select#city(name="city")
@@ -40,4 +42,36 @@ block scriptBlock
           $.toast(data.message);
         });
       });
+
+      var fileds = [{
+        name: "accept_name",
+        display: "收货人",
+        rules: "required"
+      },{
+        name: "mobile",
+        display: "手机号",
+        rules: "required|exact_length[11]"
+      },{
+        name: "province",
+        display: "省份",
+        rules: "required"
+      },{
+        name: "city",
+        display: "城市",
+        rules: "required"
+      },{
+        name: "area",
+        display: "城区",
+        rules: "required"
+      },{
+        name: "address",
+        display: "具体地址",
+        rules: "required"
+      }];
+      var validator = new FormValidator("address", fileds, function(errors, event) {
+        if(errors && errors.length > 0) {
+          $.toast(errors[0].message);
+        }
+      });
+      validator.setMessage("required", "请填写%s!");
     });

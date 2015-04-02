@@ -4,12 +4,12 @@ block content
   div.container
     form(name="reg", method="post", action="/user/reg")
       div.app-section
-        input.app-input(name="username" placeholder="手机号")
+        input.app-input(name="username" type="tel" placeholder="手机号")
       div.app-section
         input.app-input(name="password" placeholder="请输入登录密码" type="password")
         input.app-input(name="confirmPassword" placeholder="请再一次输入密码" type="password")
       div.app-section
-        input.app-input(name="verifyCode" placeholder="请输入收到的验证码")
+        input.app-input(name="verifyCode" placeholder="请输入收到的验证码" type="number")
         a.app-button.dark-blue#sendCode 发送验证码
       div.app-section
         button.app-button.green 注册
@@ -24,15 +24,15 @@ block scriptBlock
       var fileds = [{
         name: "username",
         display: "手机号",
-        rules: "required"
+        rules: "required|exact_length[11]"
       },{
         name: "password",
         display: "密码",
-        rules: "required"
+        rules: "required|min_length[6]"
       },{
         name: "confirmPassword",
         display: "确认密码",
-        rules: "required"
+        rules: "required|matches[password]"
       },{
         name: "verifyCode",
         display: "手机验证码",
@@ -43,7 +43,7 @@ block scriptBlock
           $.toast(errors[0].message);
         }
       });
-      validator.setMessage("required", "请输入%s!");
+      validator.setMessage("required", "请输入正确的%s!");
 
       var id = null;
       $("#sendCode").click(function() {  

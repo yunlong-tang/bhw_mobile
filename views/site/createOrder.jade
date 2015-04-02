@@ -3,13 +3,20 @@ extends ../layout/layout.jade
 block content
   div.container
     div.app-section
-      div#address.address(data-id=address.id) 收货信息
-        div.address-content
-          p #{address.accept_name} #{address.mobile}
-          p #{address.detail}
+      - if (address)
+        div#address.address(data-id=address.id) 
+          strong 收货信息：
+          div.address-content
+            a(href="/user/selectAddress")
+              p #{address.accept_name} #{address.mobile}
+              p #{address.detail}
+      - else
+        div.address
+          a(href="/user/selectAddress")
+            p 点击选择配送地址
 
     div.app-section
-      table
+      table.order-delivery-payment
         tbody
           tr
             td 配送方式：
@@ -44,27 +51,33 @@ block content
       div.order-price
         div.left 小计
         div.right
+          i.ion-social-yen
+          span
       div.delivery-price
         div.left 运费
         div.right
+          i.ion-social-yen
+          span
       div.total-price
         div.left 总计
         div.right
+          i.ion-social-yen
+          span          
       div.create-order
         a.btn#createOrder= "提交订单"
 
 block scriptBlock
   script.
     $(function() {
+      var products = [];
+      $(".item").each(function() {
+        var item = {
+          id: $(this).data("id"),
+          num: $(this).data("num")
+        }
+        products.push(item);
+      });
       $("#createOrder").click(function() {
-        var products = [];
-        $(".item").each(function() {
-          var item = {
-            id: $(this).data("id"),
-            num: $(this).data("num")
-          }
-          products.push(item);
-        });
         var data = {
           address_id: $("#address").data("id"),
           delivery_id: $("#delivery").val(),
@@ -90,4 +103,24 @@ block scriptBlock
 
         });
       })
+
+      var data = {
+        products: products,
+        delivery_id: $("#delivery").val()
+      };
+      $.ajax({
+        url: '/site/caculateOrderPrice',
+        type: 'POST',
+        dataType: 'json',
+        contentType: 'application/json', 
+        data: JSON.stringify(data),
+        success: function (data) {
+          $(".order-price .right span").text(data.productsPrice);
+          $(".delivery-price .right span").text(data.deliveryPrice);
+          $(".total-price .right span").text(data.total);
+        },
+        error: function (error) {
+          $.toast(error.message);
+        }
+      });
     })

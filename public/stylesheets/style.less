@@ -330,10 +330,10 @@ footer {
   display: block;
 }
 .show {
-  display: block;
+  display: block !important;
 }
 .hide {
-  display: none;
+  display: none !important;
 }
 .green {
   background-color: #3C7;
@@ -533,7 +533,17 @@ footer {
     }
   }
 }
-
+.order-delivery-payment {
+  width: 100%;
+  tr {
+    height: 35px;
+  }
+  select {
+    width: 100%;
+    // outline: 0;
+    // border: 0;
+  }
+}
 .delivery-price, .total-price{
   border-top: 1px solid #AAA;
 }
@@ -545,8 +555,28 @@ footer {
   margin-top: 0px;
   .left {
     display: inline-block;
+    width: 30%;
   }
   .right {
+    i {
+      .f(14px);
+    }
     display: inline-block;
+    width: 70%;
+    text-align: right;
+    color: #b12704;
+    font-weight: bold;
+  }
+}
+.address {
+  .address-content {
+    a {
+      text-decoration: none;
+      color: #000;
+    }
+    margin-top: 5px;
+    p {
+      margin-top: 5px;
+    }
   }
 }

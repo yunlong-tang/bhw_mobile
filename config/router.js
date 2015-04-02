@@ -3,5 +3,6 @@ module.exports = {
   userLogin: "/user/login",
   userReg: "/user/reg",
   userForget: "/user/forget",
-  addressList: "/user/address"
+  addressList: "/user/address",
+  selectAddress: "/user/selectAddress"
 }

@@ -19,6 +19,7 @@ router.post('/forget', userCtrl.forgetAction);
 router.get('/order', userCtrl.tokenVerify, userCtrl.orderList);
 router.get('/order/:id', userCtrl.tokenVerify, userCtrl.orderDetail);
 
+router.get('/selectAddress', userCtrl.tokenVerify, userCtrl.addressList);
 router.get('/address', userCtrl.tokenVerify, userCtrl.addressList);
 router.get('/address/add', userCtrl.tokenVerify, userCtrl.addressCreate);
 router.post('/address/add', userCtrl.tokenVerify, userCtrl.addressCreateAction);

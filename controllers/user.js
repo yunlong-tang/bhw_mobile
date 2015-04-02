@@ -145,7 +145,6 @@ var userCtrl = {
           orders[i].actionUrl = '/site/order/' + orders[i].id + '/purchase';
         } else if (action ==2){
           orders[i].actionText = "确认收货";
-          
         }
       };
       res.render("user/orderList", {
@@ -154,12 +153,29 @@ var userCtrl = {
       });
     });
   },
-  orderDetail: function(req, res, next) {
-
+  orderDetail: function(user, req, res, next) {
+    var orderId = req.params.id
+    userService.getOrderDetailByUserAndId(user.id, orderId).then(function (order) {
+      if (order) {
+        res.render('user/orderDetail', {
+          title: "订单详细",
+          order: order
+        })
+        return;
+      }
+      next(new Error("找不到该订单"));
+    });
   },
   addressList: function(user, req, res, next) {
     userService.getUserAddresses(user.id).then(function (addresses) {
       addresses = addresses || [];
+      if (req.path == '/selectAddress') {
+        res.render('user/selectAddress', {
+          title: "选择地址",
+          addresses: addresses
+        })
+        return;  
+      }
       res.render('user/addressList', {
         title: "我的地址",
         addresses: addresses
@@ -167,11 +183,14 @@ var userCtrl = {
     })
   },
   addressCreate: function(user, req, res, next) {
+    var type = req.query.type;
     res.render('user/addressEdit', {
-      title: "新增地址"
+      title: "新增地址",
+      type: type
     });
   },
   addressCreateAction: function (user, req, res, next) {
+    var type = req.query.type;
     var address = {
       user_id: user.id,
       accept_name: req.body.accept_name,
@@ -183,6 +202,9 @@ var userCtrl = {
     };
     userService.createAddress(address).then(function (address) {
       if (address) {
+        if (type == 'selectForOrder') {
+          res.redirect(routerConstant.selectAddress);  
+        }
         res.redirect(routerConstant.addressList);
       }
     });
@@ -214,13 +236,13 @@ var userCtrl = {
   addressRemoveAction: function (user, req, res, next) {
     var id = req.params.id;
     userService.removeAddress(id, user.id).then(function (result) {
-      if (result == undefined) {
+      if (result) {
         res.send({success: true});
       } else {
         next({
           api: true,
           status: 400,
-          meesage: "删除地址失败."
+          message: "删除地址失败"
         })
       }
     });

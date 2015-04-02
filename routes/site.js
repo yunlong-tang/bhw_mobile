@@ -11,6 +11,7 @@ router.delete('/cart/:id', siteCtrl.transformShoppingcart, siteCtrl.removeCart);
 
 router.get('/order/create', userCtrl.tokenVerify, siteCtrl.createOrder);
 router.post('/order/create', userCtrl.tokenVerify, siteCtrl.createOrderAction);
+router.post('/caculateOrderPrice', siteCtrl.caculateOrderPrice);
 
 router.get('/order/:orderId/purchase', userCtrl.tokenVerify, siteCtrl.doPay);
 

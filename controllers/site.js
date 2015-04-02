@@ -88,6 +88,7 @@ var siteCtrl = {
 
   createOrder: function(user, req, res, next) {
     var type = req.query.type;
+    var addressId = req.query.address;
     if (type == "cart") {
       var shoppingcart = req.cookies.shoppingcart;
       if (!shoppingcart) throw new Error;
@@ -95,7 +96,7 @@ var siteCtrl = {
       shoppingcart = siteService.decodeShoppingcart(shoppingcart);
       var promise = []
       promise.push(siteService.getProductsInShoppingCart(shoppingcart));
-      promise.push(userService.getUserDefaultAddress(user.id));
+      promise.push(userService.getUserAddressForOrder(user.id, addressId));
       promise.push(siteService.getSiteDelivery());
       promise.push(siteService.getSitePayment());
 
@@ -104,13 +105,32 @@ var siteCtrl = {
           title: "确认订单",
           products: data[0],
           address: data[1],
-          delivery: data[2],
-          payment: data[3]
+          delivery: data[2] || [],
+          payment: data[3] || []
         });
       });
     } else if (type == "directly") {
       
     }
+  },
+
+  caculateOrderPrice: function (req, res, next) {
+    var delivery_id = req.body.delivery_id;
+    var products = req.body.products;
+    orderService.countOrderDetail(products, delivery_id).then(function (data) {
+      if (data) {
+        res.send({
+          productsPrice: data.sum,
+          deliveryPrice: data.deliveryPrice,
+          total: data.final_sum
+        });
+      } else {
+        next({
+          api: true,
+          message: "计算失败"
+        });
+      }
+    });
   },
 
   createOrderAction: function (user, req, res, next) {
@@ -170,7 +190,7 @@ var siteCtrl = {
     };
     orderService.getOrderById(orderId).then(function (order) {
       if (order) {
-        data.total_fee = order.real_amount;
+        data.total_fee = order.order_amount;
         alipay.createDirectPayByWap(data, res);
       } else {
         next({message: "找不到订单!"});

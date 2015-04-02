@@ -10,8 +10,8 @@ block content
         div.order-section
           h5 订单# #{item.order_no}
           div.order-actions 
-            a.app-small-button.red(href="#{item.actionUrl}") #{item.actionText}
-            a.app-small-button.yellow(href="orderDetail") 详细
+            a.app-small-button.red(href="#{item.actionUrl}" class=item.actionText ? '' : 'hide') #{item.actionText}
+            a.app-small-button.yellow(href="order/#{item.id}") 详细
           table.short-info
             tbody
               tr
@@ -19,7 +19,7 @@ block content
                 td #{item.orderStatus}
               tr
                 td 金额：
-                td #{item.order_amount}
+                td #{item.order_amount.toFixed(2)}
               tr
                 td 时间：
                 td #{item.createAt}

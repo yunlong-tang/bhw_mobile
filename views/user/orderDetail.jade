@@ -2,3 +2,40 @@ extends ../layout/layout.jade
 
 block content
   div.container
+    div.app-section
+      h4 订单 ##{order.order_no}
+      p= order.orderStatus
+    div.app-section
+      h4 配送地址
+      p= order.content
+    div.app-section
+      h4 配送方式
+      p= order.delivery
+    div.app-section
+      h4 支付方式
+      p= order.payment
+    div.app-section
+      table.order-item-list
+        tbody
+          - var products = order.products;
+          - for (var i = 0; i < products.length; i ++)
+            - var product = products[i];
+            tr.item(data-num=product.num data-price=product.sellPrice data-id=product.id)
+              td.img
+                img(src=imgPrefix+product.img width="30px" height="30px")
+              td.name= product.name
+              td.num= product.goods_nums
+              td.price
+                div
+                  i.ion-social-yen
+                  span= product.real_price
+    div.app-section
+      div.order-price
+        div.left 小计
+        div.right= order.real_amount.toFixed(2)
+      div.delivery-price
+        div.left 运费
+        div.right= order.real_freight.toFixed(2)
+      div.total-price
+        div.left 总计
+        div.right= order.order_amount.toFixed(2)
