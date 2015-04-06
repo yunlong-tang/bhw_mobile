@@ -19,7 +19,7 @@
 var qs = require('querystring');
 var core_funcs = require('./alipay_core.function');
 var md5_f = require('./alipay_md5.function');
-var DOMParser = require('xmldom').DOMParser;
+var DOMParser = require('./xmldom').DOMParser;
 
 function AlipaySubmit(alipay_config){
     /**

@@ -5,7 +5,7 @@ var url = require('url');
 var inherits = require('util').inherits,
     EventEmitter = require('events').EventEmitter;
 	
-var DOMParser = require('xmldom').DOMParser;
+var DOMParser = require('./xmldom').DOMParser;
 
 var default_alipay_config = {
 	partner:'' //合作身份者id，以2088开头的16位纯数字
