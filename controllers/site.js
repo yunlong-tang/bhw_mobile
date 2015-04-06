@@ -7,6 +7,7 @@ var Sequelize = require('sequelize');
 var _ = require('lodash');
 var alipay = require('../services/alipay');
 var Promise = require('promise');
+var config = require('../config/config.js');
 
 var siteCtrl = {
   transformShoppingcart: function (req, res, next) {
@@ -181,16 +182,17 @@ var siteCtrl = {
   
   doPay: function (user, req, res, next) {
     var orderId = req.params.orderId;
-    var callback = req.query.callback;
+    var callback = req.query.callback || config.defaultCallback;
     var data = {
       out_trade_no: orderId,
-      subject: "百花味购物",
-      total_fee: 0,
-      merchant_url: callback || "http://localhost:3000/user"
+      subject: config.paymentSubject,
+      total_fee: 0.01,
+      merchant_url: callback
     };
     orderService.getOrderById(orderId).then(function (order) {
       if (order) {
         data.total_fee = order.order_amount;
+        data.out_trade_no = order.order_no;
         alipay.createDirectPayByWap(data, res);
       } else {
         next({message: "找不到订单!"});

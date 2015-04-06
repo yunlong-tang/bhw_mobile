@@ -47,6 +47,9 @@ var attributes = {
   goods_no: {
     type: Sequelize.STRING
   },
+  store_nums: {
+    type: Sequelize.INTEGER
+  }
 };
 
 var Product = sequelize.define('Product', attributes, {

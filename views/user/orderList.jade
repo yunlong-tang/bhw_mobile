@@ -9,8 +9,8 @@ block content
         - item = orders[i];
         div.order-section
           h5 订单# #{item.order_no}
-          div.order-actions 
-            a.app-small-button.red(href="#{item.actionUrl}" class=item.actionText ? '' : 'hide') #{item.actionText}
+          div.order-actions
+            a.app-small-button.red(href=item.actionUrl class=item.actionText ? '' : 'hide' data-id=item.id class=item.actionId) #{item.actionText}
             a.app-small-button.yellow(href="order/#{item.id}") 详细
           table.short-info
             tbody
@@ -23,3 +23,24 @@ block content
               tr
                 td 时间：
                 td #{item.createAt}
+
+block scriptBlock
+  script.
+    $(function(){
+      $("a.confirm").click(function() {
+        var id = $(this).data('id');
+        var confirm = $(this);
+        confirmOrder(id, function(data) {
+          $.dialog({
+            title: constants.orderConfirmTitle,
+            text: constants.orderConfirmText,
+            success: constants.orderConfirmBtn1
+          }, function() {
+            confirm.hide();
+          });
+        }, function(data) {
+          $.toast(data.message);
+        });
+        return false;
+      });
+    });

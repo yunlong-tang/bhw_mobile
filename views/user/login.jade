@@ -23,7 +23,7 @@ block scriptBlock
       var fileds = [{
         name: "username",
         display: "手机号",
-        rules: "required"
+        rules: "required|exact_length[11]"
       },{
         name: "password",
         display: "密码",

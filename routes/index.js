@@ -8,6 +8,8 @@ var site = require('./site');
 
 var homeCtrl = require('../controllers/home');
 
+var alipay = require('../payment/alipay.js');
+
 module.exports = {
   init: function(app) {
     var _app = app;
@@ -20,5 +22,7 @@ module.exports = {
     _app.use('/category', categories);
     _app.use('/product', products);
     _app.use('/site', site);
+    
+    alipay.route(_app);
   }
 };

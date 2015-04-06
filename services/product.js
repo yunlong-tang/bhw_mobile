@@ -22,7 +22,10 @@ var productService = {
     offset = offset || 0;
     return Product.findAll({
       where: {
-        is_del: 0
+        is_del: 0,
+        store_nums: {
+          gt: 0
+        }
       },
       order: "sort DESC",
       limit: size,

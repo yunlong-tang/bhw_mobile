@@ -147,6 +147,31 @@ var orderService = {
       'takeself'       : 0
     };
     return Order.create(order);
+  },
+
+  /**
+   * 
+   * @param  {[type]} orderNo [description]
+   * @param  {[type]} status  1: 已支付
+   * @return {[type]}         [description]
+   */
+  changeOrderStatus: function (orderNo, status) {
+    return Order.find({
+      where: {
+        order_no: orderNo
+      }
+    }).then(function (order) {
+      if (order) {
+        switch(status) {
+          case 1:
+            order.status = 2;
+            order.pay_status = 1;
+            return order.save();
+            break;
+        }
+      }
+      return null;
+    })
   }
 };
 

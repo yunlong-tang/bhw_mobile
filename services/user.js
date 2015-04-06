@@ -11,6 +11,7 @@ var config = require('../config/config.js');
 var _ = require('underscore');
 var request = require('request');
 var Promise = require('promise');
+var formate = require('date-util');
 
 var userService = {
   loginUser: function (username, password) {
@@ -37,6 +38,23 @@ var userService = {
         if_del: 0
       },
       order: 'create_time DESC'
+    });
+  },
+
+  confirmUserOrder: function (userId, orderId, callback) {
+    return Order.find({
+      where: {
+        user_id: userId,
+        id: orderId,
+        if_del: 0
+      }
+    }).then(function (order) {
+      if (order) {
+        order.status = 5;
+        order.completion_time = new Date();
+        order.distribution_status = 1;
+        return order.save();
+      }
     });
   },
 

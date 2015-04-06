@@ -29,4 +29,6 @@ router.delete('/address/:id', userCtrl.tokenVerify, userCtrl.addressRemoveAction
 
 router.get('/mobilecode/:type', userCtrl.getMobileCode);
 
+router.post('/order/:id/confirm', userCtrl.tokenVerify, userCtrl.confirmOrder);
+
 module.exports = router;

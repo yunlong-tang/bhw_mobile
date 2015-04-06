@@ -27,7 +27,7 @@ var userCtrl = {
   regAction: function(req, res, next) {
     var username = req.body.username;
     var password = req.body.password;
-    var data =   {
+    var data = {
       mobile    : req.body.username,
       mobilecode: req.body.verifyCode,
       password  : req.body.password,
@@ -91,7 +91,7 @@ var userCtrl = {
         }
         res.redirect(routerConstant.userIndex);
       } else {
-        res.redirect(routerConstant.userLogin);
+        res.redirect(routerConstant.userLogin + "?message=手机号或密码错误");
       }
     });
   },
@@ -113,7 +113,7 @@ var userCtrl = {
   forgetAction: function(req, res, next) {
     var username = req.body.username;
     var password = req.body.password;
-    var data =   {
+    var data = {
       mobile    : req.body.username,
       mobilecode: req.body.verifyCode,
       password  : req.body.password,
@@ -143,8 +143,10 @@ var userCtrl = {
         if (action == 1) {
           orders[i].actionText = "支付";
           orders[i].actionUrl = '/site/order/' + orders[i].id + '/purchase';
+          orders[i].actionId = 'purchase';
         } else if (action ==2){
           orders[i].actionText = "确认收货";
+          orders[i].actionId = 'confirm';
         }
       };
       res.render("user/orderList", {
@@ -152,6 +154,19 @@ var userCtrl = {
         orders: orders
       });
     });
+  },
+  confirmOrder: function (user, req, res, next) {
+    var orderId = req.params.id;
+    if (!orderId) {
+      res.send({success: false}, 400);
+    }
+    userService.confirmUserOrder(user.id, orderId).then(function (result) {
+      if (result) {
+        res.send({success: true});
+      } else {
+        res.send({success: false}, 400);
+      }
+    })
   },
   orderDetail: function(user, req, res, next) {
     var orderId = req.params.id

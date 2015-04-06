@@ -52,7 +52,10 @@
     $title.text(obj.title || "");
     $text.text(obj.text || "");
     $success.text(obj.success || "").click(noop).click(success);
-    $failed.text(obj.failed || "").click(noop).click(failed);
+    $failed.show().text(obj.failed || "").click(noop).click(failed);
+    if (!obj.failed) {
+      $failed.hide();
+    }
   };
 
   $.toast = function (msg, during) {

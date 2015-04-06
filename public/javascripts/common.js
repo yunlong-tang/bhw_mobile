@@ -140,6 +140,21 @@ function createOrder(data, success, error) {
   })
 }
 
+function confirmOrder (id, success, error) {
+  success = success || $.noop;
+  error = error || success;
+  var url = "/user/order/" + id + "/confirm";
+  $.ajax({
+    url: url,
+    type: 'POST',
+    dataType: 'json',
+    contentType: 'application/json',
+    // data: JSON.stringify(data),
+    success: success,
+    error: error
+  })
+}
+
 function getMobileCode(mobile, type, callback) {
   var url;
   switch (type) {
@@ -187,6 +202,9 @@ var constants = {
   logoutTitle: "退出提示!",
   logoutText: "您确定退出登录么?",
   cartDeleteTip: "确定删除该商品么?",
+  orderConfirmTitle: "确认收货提示!",
+  orderConfirmText: "确认收货成功 :)",
+  orderConfirmBtn1: "确定"
 }
 var VerifyCodeType = {
   "Reg": 0,
