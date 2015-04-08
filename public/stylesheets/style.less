@@ -194,9 +194,6 @@ a {
     }
   } 
   .product-detail {
-    * {
-      max-width: 100% !important;
-    }
     padding: 5px;
     .title{
       padding: 10px;
@@ -204,6 +201,9 @@ a {
       font-weight: bold;
     }
     .product-description {
+      * {
+        width: 100% !important;
+      }
       br {
         display: none;
       }
