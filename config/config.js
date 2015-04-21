@@ -5,6 +5,9 @@ var config = {
     "password": "",
     "prefix": "kz_"
   },
+  "paganation": {
+    "size": 10
+  },
   "secret": "kuaizhi_baihuawei",
   "appName": "bhw_modile",
   "defaultIcon": "/images/user_ico.gif",

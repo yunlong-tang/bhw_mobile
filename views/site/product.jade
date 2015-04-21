@@ -39,7 +39,10 @@ block scriptBlock
         touchControls: true
         //- autoSlide: true
       });
-
+      $(".product-description img").each(function(index, item){
+        $(item).attr("data-original", $(item).attr("src"));
+        $(item).attr("src", null);
+      }).lazyload();
       $('.purchase').click(function() {
         var id = $(".product-detail-page").data('id');
         joinCart(id, 1, function() {

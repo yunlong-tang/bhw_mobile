@@ -1,0 +1,14 @@
+- var imgPrefix = "http://192.168.1.100/"
+- for (var i = 0; i < products.length; i ++)
+  - item = products[i];
+  div.product-section
+    a(href='product/#{item.id}')
+      div.product-item
+        img(src=imgPrefix+item.img, alt="")
+        div.product-detail
+          div.product-name= item.name
+          div.product-bottom
+            div.left
+              i.ion-social-yen
+              span.product-price= item.sellPrice
+            span.product-purchase.btn(data-id=item.id) 立即购买

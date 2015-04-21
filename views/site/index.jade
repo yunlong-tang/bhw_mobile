@@ -36,4 +36,10 @@ block scriptBlock
         });
         return false;
       })
+
+      $(".container").loadmore({
+        bottomOffset: 1000,
+        url: '/api/getProducts',
+        size: 10
+      });
     })

@@ -5,6 +5,7 @@ var users = require('./users');
 var categories = require('./categories');
 var products = require('./products');
 var site = require('./site');
+var api = require('./api');
 
 var homeCtrl = require('../controllers/home');
 
@@ -22,6 +23,7 @@ module.exports = {
     _app.use('/category', categories);
     _app.use('/product', products);
     _app.use('/site', site);
+    _app.use('/api', api);
     
     alipay.route(_app);
   }

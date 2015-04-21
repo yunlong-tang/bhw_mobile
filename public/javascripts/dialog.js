@@ -75,4 +75,46 @@
 
   $.noop = function () {};
 
-})(Zepto)
+})(Zepto);
+
+(function ($) {
+  var defaults = {
+    bottomOffset: 1000,
+    url: '',
+    autoAppend: true,
+    loading: false,
+    index: 1,
+    size: 10,
+    noMore: false
+  };
+  var $window = $(window);
+  $.fn.loadmore = function (options) {
+    var self = this;
+    self.settings = $.extend({}, defaults, options);
+    $window.scroll(function () {
+      var bottom = document.body.scrollHeight - document.body.scrollTop - $window.height();
+      if (bottom < self.settings.bottomOffset && self.settings.loading == false && self.settings.noMore != true) {
+        self.settings.loading = true;
+        data = {
+          size: self.settings.size,
+          offset: self.settings.size * self.settings.index++
+        };
+        $.ajax({
+          url: self.settings.url,
+          type: 'GET',
+          data: data,
+          success: function (data) {
+            if (data.length > 0) {
+              if (self.settings.autoAppend) {
+                $(self).append(data);
+              }
+            } else {
+              self.settings.noMore = true;
+            } 
+            self.settings.loading = false;
+          }
+        })
+      }
+    })
+  }
+})(Zepto);

@@ -1,9 +1,10 @@
 var productService = require('../services/product.js');
 var userService = require('../services/user.js');
+var paganation = require('../config/config.js').paganation;
 
 var homeCtrl = {
   index: function (req, res, next) {
-    productService.getProducts().then(function (result) {
+    productService.getProducts(paganation.size).then(function (result) {
       res.render('site/index', {
         hideBackButton: true,
         title: "闪购",
